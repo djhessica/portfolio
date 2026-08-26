@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Djhessica Brati de Lima | Desenvolvedora</title>
 
-    <meta
-        name="description"
-        content="Portfólio de Djhessica Brati de Lima — Desenvolvimento Web, Java, React, Banco de Dados e projetos de tecnologia."
-    >
-<!--alterar algumas informações e adicionar algumas tambem presiso subir priojetoss que nao estao no git para pode adicionar ao portifolio -->
+    <meta name="description"
+        content="Portfólio de Djhessica Brati de Lima — Desenvolvimento Web, Java, React, Banco de Dados e projetos de tecnologia.">
+    <!--alterar algumas informações e adicionar algumas tambem presiso subir priojetoss que nao estao no git para pode adicionar ao portifolio -->
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
 
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -71,11 +69,11 @@
 
             --black: #050505;
             --black-soft: #0b0b0d;
-            --card: rgba(255,255,255,0.045);
+            --card: rgba(255, 255, 255, 0.045);
 
             --white: #ffffff;
             --gray: #a3a3a8;
-            --border: rgba(255,255,255,0.09);
+            --border: rgba(255, 255, 255, 0.09);
 
             --max-width: 1200px;
         }
@@ -94,10 +92,8 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(
-                var(--pink),
-                var(--pink-dark)
-            );
+            background: linear-gradient(var(--pink),
+                    var(--pink-dark));
             border-radius: 20px;
         }
 
@@ -118,11 +114,9 @@
             width: 700px;
             height: 700px;
             border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(255, 47, 146, 0.12),
-                transparent 70%
-            );
+            background: radial-gradient(circle,
+                    rgba(255, 47, 146, 0.12),
+                    transparent 70%);
             filter: blur(30px);
             top: -300px;
             right: -200px;
@@ -135,11 +129,9 @@
             height: 500px;
             top: 50%;
             left: -300px;
-            background: radial-gradient(
-                circle,
-                rgba(255, 47, 146, 0.08),
-                transparent 70%
-            );
+            background: radial-gradient(circle,
+                    rgba(255, 47, 146, 0.08),
+                    transparent 70%);
         }
 
 
@@ -158,11 +150,11 @@
             align-items: center;
             z-index: 1000;
 
-            background: rgba(5,5,5,0.65);
+            background: rgba(5, 5, 5, 0.65);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
 
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .nav-content {
@@ -219,14 +211,14 @@
 
         .nav-button {
             padding: 11px 19px;
-            border: 1px solid rgba(255,47,146,0.6);
+            border: 1px solid rgba(255, 47, 146, 0.6);
             border-radius: 30px;
             color: white !important;
         }
 
         .nav-button:hover {
             background: var(--pink);
-            box-shadow: 0 0 30px rgba(255,47,146,0.25);
+            box-shadow: 0 0 30px rgba(255, 47, 146, 0.25);
         }
 
         .menu-button {
@@ -279,8 +271,8 @@
 
             padding: 8px 14px;
 
-            border: 1px solid rgba(255,255,255,0.09);
-            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            background: rgba(255, 255, 255, 0.035);
 
             border-radius: 100px;
 
@@ -300,7 +292,9 @@
         }
 
         @keyframes pulse {
-            0%,100% {
+
+            0%,
+            100% {
                 opacity: 1;
                 transform: scale(1);
             }
@@ -354,23 +348,23 @@
             color: white;
 
             box-shadow:
-                0 10px 35px rgba(255,47,146,0.18);
+                0 10px 35px rgba(255, 47, 146, 0.18);
         }
 
         .button-primary:hover {
             transform: translateY(-3px);
             box-shadow:
-                0 15px 45px rgba(255,47,146,0.32);
+                0 15px 45px rgba(255, 47, 146, 0.32);
         }
 
         .button-secondary {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
         }
 
         .button-secondary:hover {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             transform: translateY(-3px);
         }
 
@@ -393,30 +387,28 @@
 
             border-radius: 50%;
 
-            border: 1px solid rgba(255,47,146,.5);
+            border: 1px solid rgba(255, 47, 146, .5);
 
             background:
-                radial-gradient(
-                    circle at 35% 30%,
-                    rgba(255,255,255,.18),
-                    transparent 10%
-                ),
-                radial-gradient(
-                    circle at center,
-                    rgba(255,47,146,.18),
-                    rgba(255,47,146,.02) 55%,
-                    transparent 70%
-                );
+                radial-gradient(circle at 35% 30%,
+                    rgba(255, 255, 255, .18),
+                    transparent 10%),
+                radial-gradient(circle at center,
+                    rgba(255, 47, 146, .18),
+                    rgba(255, 47, 146, .02) 55%,
+                    transparent 70%);
 
             box-shadow:
-                0 0 80px rgba(255,47,146,.12),
-                inset 0 0 60px rgba(255,47,146,.1);
+                0 0 80px rgba(255, 47, 146, .12),
+                inset 0 0 60px rgba(255, 47, 146, .1);
 
             animation: floating 6s ease-in-out infinite;
         }
 
         @keyframes floating {
-            0%,100% {
+
+            0%,
+            100% {
                 transform: translateY(0) rotate(0deg);
             }
 
@@ -432,7 +424,7 @@
             inset: -30px;
 
             border-radius: 50%;
-            border: 1px solid rgba(255,47,146,.15);
+            border: 1px solid rgba(255, 47, 146, .15);
 
             transform: rotate(45deg) scaleX(1.6);
         }
@@ -446,8 +438,8 @@
 
             padding: 14px 18px;
 
-            background: rgba(12,12,14,.75);
-            border: 1px solid rgba(255,255,255,.09);
+            background: rgba(12, 12, 14, .75);
+            border: 1px solid rgba(255, 255, 255, .09);
 
             backdrop-filter: blur(15px);
 
@@ -457,7 +449,7 @@
             font-size: 11px;
 
             box-shadow:
-                0 20px 60px rgba(0,0,0,.3);
+                0 20px 60px rgba(0, 0, 0, .3);
         }
 
         .floating-card.one {
@@ -480,14 +472,14 @@
         ========================================================= */
 
         .marquee {
-            border-top: 1px solid rgba(255,255,255,.06);
-            border-bottom: 1px solid rgba(255,255,255,.06);
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
 
             overflow: hidden;
 
             padding: 18px 0;
 
-            background: rgba(255,255,255,.015);
+            background: rgba(255, 255, 255, .015);
         }
 
         .marquee-content {
@@ -576,7 +568,7 @@
             font-size: 15px;
         }
 
-        .about-text p + p {
+        .about-text p+p {
             margin-top: 18px;
         }
 
@@ -602,7 +594,7 @@
         }
 
         .stat-card:hover {
-            border-color: rgba(255,47,146,.35);
+            border-color: rgba(255, 47, 146, .35);
             transform: translateY(-5px);
         }
 
@@ -625,7 +617,7 @@
 
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(4,1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 14px;
         }
 
@@ -633,7 +625,7 @@
             padding: 24px;
 
             border: 1px solid var(--border);
-            background: rgba(255,255,255,.025);
+            background: rgba(255, 255, 255, .025);
 
             border-radius: 12px;
 
@@ -641,8 +633,8 @@
         }
 
         .skill:hover {
-            background: rgba(255,47,146,.06);
-            border-color: rgba(255,47,146,.3);
+            background: rgba(255, 47, 146, .06);
+            border-color: rgba(255, 47, 146, .3);
             transform: translateY(-5px);
         }
 
@@ -671,7 +663,7 @@
 
         .projects {
             display: grid;
-            grid-template-columns: repeat(2,1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 18px;
         }
 
@@ -686,11 +678,9 @@
             overflow: hidden;
 
             background:
-                radial-gradient(
-                    circle at 90% 10%,
-                    rgba(255,47,146,.12),
-                    transparent 35%
-                ),
+                radial-gradient(circle at 90% 10%,
+                    rgba(255, 47, 146, .12),
+                    transparent 35%),
                 #0a0a0c;
 
             padding: 32px;
@@ -704,9 +694,9 @@
 
         .project:hover {
             transform: translateY(-8px);
-            border-color: rgba(255,47,146,.35);
+            border-color: rgba(255, 47, 146, .35);
             box-shadow:
-                0 25px 80px rgba(0,0,0,.35);
+                0 25px 80px rgba(0, 0, 0, .35);
         }
 
         .project-number {
@@ -739,8 +729,8 @@
             padding: 7px 10px;
             border-radius: 6px;
 
-            background: rgba(255,255,255,.05);
-            border: 1px solid rgba(255,255,255,.07);
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .07);
 
             color: #aaa;
             font-family: "DM Mono", monospace;
@@ -785,11 +775,9 @@
             width: 1px;
 
             background:
-                linear-gradient(
-                    transparent,
+                linear-gradient(transparent,
                     var(--pink),
-                    transparent
-                );
+                    transparent);
         }
 
         .timeline-item {
@@ -813,7 +801,7 @@
             background: var(--pink);
 
             box-shadow:
-                0 0 20px rgba(255,47,146,.6);
+                0 0 20px rgba(255, 47, 146, .6);
         }
 
         .timeline-date {
@@ -846,16 +834,14 @@
 
             text-align: center;
 
-            border: 1px solid rgba(255,47,146,.2);
+            border: 1px solid rgba(255, 47, 146, .2);
             border-radius: 22px;
 
             background:
-                radial-gradient(
-                    circle at center,
-                    rgba(255,47,146,.1),
-                    transparent 60%
-                ),
-                rgba(255,255,255,.025);
+                radial-gradient(circle at center,
+                    rgba(255, 47, 146, .1),
+                    transparent 60%),
+                rgba(255, 255, 255, .025);
 
             overflow: hidden;
         }
@@ -867,7 +853,7 @@
             width: 300px;
             height: 300px;
 
-            border: 1px solid rgba(255,47,146,.1);
+            border: 1px solid rgba(255, 47, 146, .1);
             border-radius: 50%;
 
             top: -150px;
@@ -875,7 +861,7 @@
         }
 
         .contact-box h2 {
-            font-size: clamp(35px,5vw,60px);
+            font-size: clamp(35px, 5vw, 60px);
             letter-spacing: -3px;
             margin-bottom: 18px;
         }
@@ -906,7 +892,7 @@
 
             padding: 30px 0;
 
-            border-top: 1px solid rgba(255,255,255,.06);
+            border-top: 1px solid rgba(255, 255, 255, .06);
 
             display: flex;
             justify-content: space-between;
@@ -955,7 +941,7 @@
 
                 padding: 25px;
 
-                background: rgba(5,5,5,.96);
+                background: rgba(5, 5, 5, .96);
                 backdrop-filter: blur(20px);
 
                 flex-direction: column;
@@ -995,7 +981,7 @@
             }
 
             .skills-grid {
-                grid-template-columns: repeat(2,1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -1064,7 +1050,6 @@
                 grid-template-columns: 1fr;
             }
         }
-
     </style>
 </head>
 
@@ -1117,11 +1102,7 @@
                 </li>
             </ul>
 
-            <button
-                class="menu-button"
-                id="menuButton"
-                aria-label="Abrir menu"
-            >
+            <button class="menu-button" id="menuButton" aria-label="Abrir menu">
                 ☰
             </button>
 
@@ -1129,7 +1110,7 @@
 
     </nav>
 
-//alterar a parte sobre mim 
+    //alterar a parte sobre mim
     <!-- =========================================================
          HERO
     ========================================================== -->
@@ -1153,24 +1134,21 @@
 
                 <p class="hero-description">
                     Olá, eu sou <strong>Djhessica Brati de Lima</strong>.
-                    Desenvolvedora apaixonada por tecnologia e por criar interfaces modernas, sistemas web e soluções que transformam ideias em experiências digitais.
+                    Desenvolvedora apaixonada por tecnologia e por criar interfaces modernas, sistemas web e soluções
+                    que transformam ideias em experiências digitais.
 
-Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SENAI, com foco em desenvolvimento web, banco de dados e integração entre frontend e backend. Meu objetivo é unir criatividade e técnica para entregar projetos funcionais, intuitivos e impactantes.
+                    Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SENAI, com foco em
+                    desenvolvimento web, banco de dados e integração entre frontend e backend. Meu objetivo é unir
+                    criatividade e técnica para entregar projetos funcionais, intuitivos e impactantes.
                 </p>
 
                 <div class="hero-actions">
 
-                    <a
-                        href="#projetos"
-                        class="button button-primary"
-                    >
+                    <a href="#projetos" class="button button-primary">
                         Ver meus projetos →
                     </a>
 
-                    <a
-                        href="#contato"
-                        class="button button-secondary"
-                    >
+                    <a href="#contato" class="button button-secondary">
                         Vamos conversar
                     </a>
 
@@ -1541,12 +1519,8 @@ Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SEN
                         </div>
 
                     </div>
-//Aterar link para o projeto real gestão de prego~es eletronicos
-                    <a
-                        href="https://github.com/" 
-                        target="_blank"
-                        class="project-link"
-                    >
+                    //Aterar link para o projeto real gestão de prego~es eletronicos
+                    <a href="https://github.com/" target="_blank" class="project-link">
                         Ver projeto no GitHub ↗
                     </a>
 
@@ -1583,12 +1557,8 @@ Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SEN
                         </div>
 
                     </div>
-//aterar para link projeto da biblioteca senai
-                    <a
-                        href="https://github.com/"
-                        target="_blank"
-                        class="project-link"
-                    >
+                    //aterar para link projeto da biblioteca senai
+                    <a href="https://github.com/" target="_blank" class="project-link">
                         Ver projeto no GitHub ↗
                     </a>
 
@@ -1611,7 +1581,7 @@ Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SEN
 
                         <p>
                             Aplicação web pensada para apoiar atividades
-                            relacionadas ao trabalho de guarda-vidas, 
+                            relacionadas ao trabalho de guarda-vidas,
                             utilizando uma interface moderna, responsiva
                             e orientada à usabilidade.
                         </p>
@@ -1626,12 +1596,8 @@ Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SEN
                         </div>
 
                     </div>
-//alterar para link original do projeto guarda vidas
-                    <a
-                        href="https://github.com/"
-                        target="_blank"
-                        class="project-link"
-                    >
+                    //alterar para link original do projeto guarda vidas
+                    <a href="https://github.com/" target="_blank" class="project-link">
                         Ver projeto no GitHub ↗
                     </a>
 
@@ -1669,12 +1635,8 @@ Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SEN
                         </div>
 
                     </div>
-//adicionar link para o projeto de agendamentos de consultas 
-                    <a
-                        href="https://github.com/"
-                        target="_blank"
-                        class="project-link"
-                    >
+                    //adicionar link para o projeto de agendamentos de consultas
+                    <a href="https://github.com/" target="_blank" class="project-link">
                         Ver projeto no GitHub ↗
                     </a>
 
@@ -1809,26 +1771,16 @@ Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SEN
 
                 <div class="contact-links">
 
-                    <a
-                        href="https://github.com/djhessica"
-                        target="_blank"
-                        class="button button-primary"
-                    >
+                    <a href="https://github.com/djhessica" target="_blank" class="button button-primary">
                         GitHub ↗
                     </a>
 
-                    <a
-                        href="mailto:djhessicabratidelima@gmail.com"
-                        class="button button-secondary"
-                    >
+                    <a href="mailto:djhessicabratidelima@gmail.com" class="button button-secondary">
                         E-mail →
                     </a>
 
-                    <a
-                        href="https://www.linkedin.com/in/djhessica-brati-de-lima-86915230b/"
-                        target="_blank"
-                        class="button button-secondary"
-                    >
+                    <a href="https://www.linkedin.com/in/djhessica-brati-de-lima-86915230b/" target="_blank"
+                        class="button button-secondary">
                         LinkedIn ↗
                     </a>
 
@@ -2253,4 +2205,5 @@ Atualmente curso o último ano de Técnico em Desenvolvimento de Sistemas no SEN
     </script>
 
 </body>
+
 </html>

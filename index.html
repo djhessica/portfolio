@@ -1,2256 +1,1040 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Djhessica Brati de Lima | Desenvolvedora</title>
-
-    <meta
-        name="description"
-        content="Portfólio de Djhessica Brati de Lima — Desenvolvimento Web, Java, React, Banco de Dados e projetos de tecnologia."
-    >
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <style>
-
-        /* =========================================================
-           RESET
-        ========================================================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: #050505;
-            color: #ffffff;
-            font-family: "Inter", sans-serif;
-            overflow-x: hidden;
-        }
-
-        body::selection {
-            background: #ff2f92;
-            color: white;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-
-        /* =========================================================
-           VARIÁVEIS
-        ========================================================= */
-
-        :root {
-            --pink: #ff2f92;
-            --pink-light: #ff67b2;
-            --pink-dark: #c91c6c;
-
-            --black: #050505;
-            --black-soft: #0b0b0d;
-            --card: rgba(255,255,255,0.045);
-
-            --white: #ffffff;
-            --gray: #a3a3a8;
-            --border: rgba(255,255,255,0.09);
-
-            --max-width: 1200px;
-        }
-
-
-        /* =========================================================
-           SCROLLBAR
-        ========================================================= */
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #050505;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(
-                var(--pink),
-                var(--pink-dark)
-            );
-            border-radius: 20px;
-        }
-
-
-        /* =========================================================
-           BACKGROUND
-        ========================================================= */
-
-        #three-container {
-            position: fixed;
-            inset: 0;
-            z-index: -3;
-            pointer-events: none;
-        }
-
-        .background-glow {
-            position: fixed;
-            width: 700px;
-            height: 700px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(255, 47, 146, 0.12),
-                transparent 70%
-            );
-            filter: blur(30px);
-            top: -300px;
-            right: -200px;
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        .background-glow.two {
-            width: 500px;
-            height: 500px;
-            top: 50%;
-            left: -300px;
-            background: radial-gradient(
-                circle,
-                rgba(255, 47, 146, 0.08),
-                transparent 70%
-            );
-        }
-
-
-        /* =========================================================
-           NAVBAR
-        ========================================================= */
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 76px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-
-            background: rgba(5,5,5,0.65);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .nav-content {
-            width: min(92%, var(--max-width));
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-family: "DM Mono", monospace;
-            font-size: 18px;
-            font-weight: 500;
-            letter-spacing: -1px;
-        }
-
-        .logo span {
-            color: var(--pink);
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #aaa;
-            font-size: 13px;
-            transition: 0.3s;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 1px;
-            background: var(--pink);
-            bottom: -7px;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: white;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-button {
-            padding: 11px 19px;
-            border: 1px solid rgba(255,47,146,0.6);
-            border-radius: 30px;
-            color: white !important;
-        }
-
-        .nav-button:hover {
-            background: var(--pink);
-            box-shadow: 0 0 30px rgba(255,47,146,0.25);
-        }
-
-        .menu-button {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 26px;
-            cursor: pointer;
-        }
-
-
-        /* =========================================================
-           HERO
-        ========================================================= */
-
-        .hero {
-            min-height: 100vh;
-            width: min(92%, var(--max-width));
-            margin: auto;
-
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            align-items: center;
-            gap: 60px;
-
-            padding-top: 100px;
-        }
-
-        .hero-content {
-            animation: heroIn 1s ease forwards;
-        }
-
-        @keyframes heroIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .availability {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-
-            padding: 8px 14px;
-
-            border: 1px solid rgba(255,255,255,0.09);
-            background: rgba(255,255,255,0.035);
-
-            border-radius: 100px;
-
-            font-size: 11px;
-            color: #aaa;
-
-            margin-bottom: 25px;
-        }
-
-        .availability-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #ff3d9c;
-            box-shadow: 0 0 12px #ff3d9c;
-            animation: pulse 1.8s infinite;
-        }
-
-        @keyframes pulse {
-            0%,100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: .4;
-                transform: scale(.7);
-            }
-        }
-
-        .hero h1 {
-            font-size: clamp(48px, 7vw, 88px);
-            line-height: .94;
-            letter-spacing: -5px;
-            font-weight: 700;
-            margin-bottom: 28px;
-        }
-
-        .hero h1 .pink {
-            color: var(--pink);
-        }
-
-        .hero-description {
-            color: #a3a3a8;
-            max-width: 570px;
-            line-height: 1.8;
-            font-size: 16px;
-            margin-bottom: 34px;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .button {
-            padding: 14px 22px;
-            border-radius: 9px;
-
-            font-size: 13px;
-            font-weight: 500;
-
-            transition: .3s;
-            cursor: pointer;
-            border: none;
-        }
-
-        .button-primary {
-            background: var(--pink);
-            color: white;
-
-            box-shadow:
-                0 10px 35px rgba(255,47,146,0.18);
-        }
-
-        .button-primary:hover {
-            transform: translateY(-3px);
-            box-shadow:
-                0 15px 45px rgba(255,47,146,0.32);
-        }
-
-        .button-secondary {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-        }
-
-        .button-secondary:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateY(-3px);
-        }
-
-
-        /* =========================================================
-           HERO VISUAL
-        ========================================================= */
-
-        .hero-visual {
-            height: 500px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .orb {
-            width: 310px;
-            height: 310px;
-
-            border-radius: 50%;
-
-            border: 1px solid rgba(255,47,146,.5);
-
-            background:
-                radial-gradient(
-                    circle at 35% 30%,
-                    rgba(255,255,255,.18),
-                    transparent 10%
-                ),
-                radial-gradient(
-                    circle at center,
-                    rgba(255,47,146,.18),
-                    rgba(255,47,146,.02) 55%,
-                    transparent 70%
-                );
-
-            box-shadow:
-                0 0 80px rgba(255,47,146,.12),
-                inset 0 0 60px rgba(255,47,146,.1);
-
-            animation: floating 6s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0%,100% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-20px) rotate(5deg);
-            }
-        }
-
-        .orb::before,
-        .orb::after {
-            content: "";
-            position: absolute;
-            inset: -30px;
-
-            border-radius: 50%;
-            border: 1px solid rgba(255,47,146,.15);
-
-            transform: rotate(45deg) scaleX(1.6);
-        }
-
-        .orb::after {
-            transform: rotate(-45deg) scaleX(1.6);
-        }
-
-        .floating-card {
-            position: absolute;
-
-            padding: 14px 18px;
-
-            background: rgba(12,12,14,.75);
-            border: 1px solid rgba(255,255,255,.09);
-
-            backdrop-filter: blur(15px);
-
-            border-radius: 12px;
-
-            font-family: "DM Mono", monospace;
-            font-size: 11px;
-
-            box-shadow:
-                0 20px 60px rgba(0,0,0,.3);
-        }
-
-        .floating-card.one {
-            top: 70px;
-            right: 0;
-        }
-
-        .floating-card.two {
-            bottom: 90px;
-            left: 20px;
-        }
-
-        .floating-card span {
-            color: var(--pink);
-        }
-
-
-        /* =========================================================
-           MARQUEE
-        ========================================================= */
-
-        .marquee {
-            border-top: 1px solid rgba(255,255,255,.06);
-            border-bottom: 1px solid rgba(255,255,255,.06);
-
-            overflow: hidden;
-
-            padding: 18px 0;
-
-            background: rgba(255,255,255,.015);
-        }
-
-        .marquee-content {
-            display: flex;
-            width: max-content;
-
-            animation: marquee 25s linear infinite;
-        }
-
-        .marquee-item {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-
-            margin-right: 30px;
-
-            font-family: "DM Mono", monospace;
-            font-size: 12px;
-            color: #777;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .marquee-item::after {
-            content: "✦";
-            color: var(--pink);
-        }
-
-        @keyframes marquee {
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-
-        /* =========================================================
-           SEÇÕES
-        ========================================================= */
-
-        section {
-            width: min(92%, var(--max-width));
-            margin: auto;
-            padding: 130px 0;
-        }
-
-        .section-header {
-            margin-bottom: 55px;
-        }
-
-        .section-number {
-            color: var(--pink);
-            font-family: "DM Mono", monospace;
-            font-size: 12px;
-            margin-bottom: 15px;
-        }
-
-        .section-title {
-            font-size: clamp(36px, 5vw, 60px);
-            letter-spacing: -3px;
-            line-height: 1;
-        }
-
-        .section-description {
-            margin-top: 18px;
-            max-width: 580px;
-            color: #888;
-            line-height: 1.7;
-            font-size: 14px;
-        }
-
-
-        /* =========================================================
-           ABOUT
-        ========================================================= */
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .about-text {
-            color: #aaa;
-            line-height: 1.9;
-            font-size: 15px;
-        }
-
-        .about-text p + p {
-            margin-top: 18px;
-        }
-
-        .about-highlight {
-            color: white;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-
-        .stat-card {
-            padding: 28px;
-
-            background: var(--card);
-
-            border: 1px solid var(--border);
-            border-radius: 14px;
-
-            transition: .35s;
-        }
-
-        .stat-card:hover {
-            border-color: rgba(255,47,146,.35);
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 34px;
-            font-weight: 700;
-            color: var(--pink);
-            margin-bottom: 7px;
-        }
-
-        .stat-label {
-            color: #888;
-            font-size: 12px;
-        }
-
-
-        /* =========================================================
-           SKILLS
-        ========================================================= */
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(4,1fr);
-            gap: 14px;
-        }
-
-        .skill {
-            padding: 24px;
-
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,.025);
-
-            border-radius: 12px;
-
-            transition: .35s;
-        }
-
-        .skill:hover {
-            background: rgba(255,47,146,.06);
-            border-color: rgba(255,47,146,.3);
-            transform: translateY(-5px);
-        }
-
-        .skill-icon {
-            color: var(--pink);
-            font-family: "DM Mono", monospace;
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-
-        .skill h3 {
-            font-size: 15px;
-            margin-bottom: 8px;
-        }
-
-        .skill p {
-            color: #777;
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-
-        /* =========================================================
-           PROJECTS
-        ========================================================= */
-
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(2,1fr);
-            gap: 18px;
-        }
-
-        .project {
-            position: relative;
-
-            min-height: 370px;
-
-            border: 1px solid var(--border);
-            border-radius: 18px;
-
-            overflow: hidden;
-
-            background:
-                radial-gradient(
-                    circle at 90% 10%,
-                    rgba(255,47,146,.12),
-                    transparent 35%
-                ),
-                #0a0a0c;
-
-            padding: 32px;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-
-            transition: .4s;
-        }
-
-        .project:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255,47,146,.35);
-            box-shadow:
-                0 25px 80px rgba(0,0,0,.35);
-        }
-
-        .project-number {
-            font-family: "DM Mono", monospace;
-            color: var(--pink);
-            font-size: 11px;
-        }
-
-        .project h3 {
-            font-size: 29px;
-            letter-spacing: -1px;
-            margin: 20px 0 12px;
-        }
-
-        .project p {
-            color: #888;
-            font-size: 13px;
-            line-height: 1.7;
-            max-width: 480px;
-        }
-
-        .project-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 25px;
-        }
-
-        .tag {
-            padding: 7px 10px;
-            border-radius: 6px;
-
-            background: rgba(255,255,255,.05);
-            border: 1px solid rgba(255,255,255,.07);
-
-            color: #aaa;
-            font-family: "DM Mono", monospace;
-            font-size: 9px;
-        }
-
-        .project-link {
-            margin-top: 28px;
-
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-
-            color: white;
-            font-size: 12px;
-
-            transition: .3s;
-        }
-
-        .project-link:hover {
-            color: var(--pink);
-            gap: 15px;
-        }
-
-
-        /* =========================================================
-           EXPERIENCE / PROCESS
-        ========================================================= */
-
-        .timeline {
-            position: relative;
-            max-width: 850px;
-        }
-
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-
-            width: 1px;
-
-            background:
-                linear-gradient(
-                    transparent,
-                    var(--pink),
-                    transparent
-                );
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 45px;
-            margin-bottom: 55px;
-        }
-
-        .timeline-item::before {
-            content: "";
-            position: absolute;
-
-            left: 3px;
-            top: 5px;
-
-            width: 11px;
-            height: 11px;
-
-            border-radius: 50%;
-
-            background: var(--pink);
-
-            box-shadow:
-                0 0 20px rgba(255,47,146,.6);
-        }
-
-        .timeline-date {
-            color: var(--pink);
-            font-family: "DM Mono", monospace;
-            font-size: 10px;
-            margin-bottom: 10px;
-        }
-
-        .timeline-item h3 {
-            font-size: 19px;
-            margin-bottom: 9px;
-        }
-
-        .timeline-item p {
-            color: #888;
-            line-height: 1.7;
-            font-size: 13px;
-        }
-
-
-        /* =========================================================
-           CONTACT
-        ========================================================= */
-
-        .contact-box {
-            position: relative;
-
-            padding: 80px 50px;
-
-            text-align: center;
-
-            border: 1px solid rgba(255,47,146,.2);
-            border-radius: 22px;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(255,47,146,.1),
-                    transparent 60%
-                ),
-                rgba(255,255,255,.025);
-
-            overflow: hidden;
-        }
-
-        .contact-box::before {
-            content: "";
-
-            position: absolute;
-            width: 300px;
-            height: 300px;
-
-            border: 1px solid rgba(255,47,146,.1);
-            border-radius: 50%;
-
-            top: -150px;
-            left: calc(50% - 150px);
-        }
-
-        .contact-box h2 {
-            font-size: clamp(35px,5vw,60px);
-            letter-spacing: -3px;
-            margin-bottom: 18px;
-        }
-
-        .contact-box p {
-            color: #888;
-            max-width: 500px;
-            margin: 0 auto 30px;
-            line-height: 1.7;
-            font-size: 14px;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-
-        /* =========================================================
-           FOOTER
-        ========================================================= */
-
-        footer {
-            width: min(92%, var(--max-width));
-            margin: auto;
-
-            padding: 30px 0;
-
-            border-top: 1px solid rgba(255,255,255,.06);
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            color: #555;
-
-            font-family: "DM Mono", monospace;
-            font-size: 10px;
-        }
-
-        footer span {
-            color: var(--pink);
-        }
-
-
-        /* =========================================================
-           REVEAL ANIMATION
-        ========================================================= */
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(35px);
-            transition:
-                opacity .8s ease,
-                transform .8s ease;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-
-        /* =========================================================
-           RESPONSIVIDADE
-        ========================================================= */
-
-        @media(max-width: 900px) {
-
-            .nav-links {
-                position: fixed;
-                top: 76px;
-                left: 0;
-                width: 100%;
-
-                padding: 25px;
-
-                background: rgba(5,5,5,.96);
-                backdrop-filter: blur(20px);
-
-                flex-direction: column;
-
-                transform: translateY(-130%);
-                transition: .4s;
-
-                border-bottom: 1px solid var(--border);
-            }
-
-            .nav-links.active {
-                transform: translateY(0);
-            }
-
-            .menu-button {
-                display: block;
-            }
-
-            .hero {
-                grid-template-columns: 1fr;
-                padding-top: 130px;
-            }
-
-            .hero-visual {
-                height: 380px;
-                order: -1;
-            }
-
-            .orb {
-                width: 230px;
-                height: 230px;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 45px;
-            }
-
-            .skills-grid {
-                grid-template-columns: repeat(2,1fr);
-            }
-        }
-
-        @media(max-width: 600px) {
-
-            section {
-                padding: 90px 0;
-            }
-
-            .hero h1 {
-                letter-spacing: -3px;
-            }
-
-            .hero-description {
-                font-size: 14px;
-            }
-
-            .hero-visual {
-                height: 300px;
-            }
-
-            .orb {
-                width: 190px;
-                height: 190px;
-            }
-
-            .floating-card.one {
-                right: 0;
-                top: 20px;
-            }
-
-            .floating-card.two {
-                left: 0;
-                bottom: 25px;
-            }
-
-            .stats {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .projects {
-                grid-template-columns: 1fr;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .contact-box {
-                padding: 60px 25px;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 12px;
-            }
-        }
-
-        @media(max-width: 400px) {
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-        }
-
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Djhessica Brati de Lima — Portfólio Interativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-void:#04060f;
+    --navy:#0b1230;
+    --panel:rgba(10,16,40,0.92);
+    --panel-light:rgba(20,28,64,0.85);
+    --gold:#d4af37;
+    --gold-bright:#f3d576;
+    --purple:#8a5cf6;
+    --blue:#3aa0ff;
+    --emerald:#2ecc82;
+    --text:#e9edf7;
+    --text-dim:#93a0c4;
+    --border:rgba(212,175,55,0.35);
+    --font-display:'Cinzel', serif;
+    --font-body:'Rajdhani', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    width:100%; height:100%; overflow:hidden;
+    background:var(--bg-void);
+    font-family:var(--font-body);
+    color:var(--text);
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+  }
+  #canvas-root{position:fixed; inset:0;}
+  canvas{display:block; outline:none;}
+
+  /* ---------- Loading / Intro ---------- */
+  #intro{
+    position:fixed; inset:0; z-index:100;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column; text-align:center;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(138,92,246,0.20), transparent 55%),
+      radial-gradient(ellipse at 50% 90%, rgba(46,204,130,0.12), transparent 55%),
+      var(--bg-void);
+    transition:opacity .8s ease, visibility .8s ease;
+  }
+  #intro.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+  .intro-eyebrow{
+    font-family:var(--font-body); letter-spacing:.35em; font-size:12px;
+    color:var(--gold); font-weight:600; margin-bottom:14px;
+  }
+  .intro-title{
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(28px,6vw,54px);
+    background:linear-gradient(180deg, var(--gold-bright), var(--gold) 60%, #9a7418);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 0 40px rgba(212,175,55,0.25);
+  }
+  .intro-sub{
+    margin-top:14px; max-width:520px; padding:0 20px;
+    font-size:17px; color:var(--text-dim); line-height:1.5;
+  }
+  .intro-controls{
+    margin-top:36px; display:flex; gap:22px; flex-wrap:wrap; justify-content:center; padding:0 20px;
+  }
+  .key-hint{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    font-size:12px; color:var(--text-dim); letter-spacing:.05em;
+  }
+  .key-badges{display:flex; gap:4px;}
+  .key{
+    width:34px; height:34px; border:1px solid var(--border); border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:13px; color:var(--gold-bright);
+    background:linear-gradient(180deg, rgba(212,175,55,0.12), rgba(0,0,0,0.3));
+    box-shadow:inset 0 0 8px rgba(212,175,55,0.15);
+  }
+  #start-btn{
+    margin-top:40px; padding:14px 46px; cursor:pointer;
+    font-family:var(--font-display); font-size:16px; letter-spacing:.08em; font-weight:600;
+    color:#1a1206; background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+    border:none; border-radius:4px;
+    box-shadow:0 0 24px rgba(212,175,55,0.45), 0 4px 0 #6e5410;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  #start-btn:hover{transform:translateY(-2px); box-shadow:0 0 32px rgba(212,175,55,0.65), 0 6px 0 #6e5410;}
+  #start-btn:active{transform:translateY(1px); box-shadow:0 0 18px rgba(212,175,55,0.4), 0 2px 0 #6e5410;}
+
+  /* ---------- HUD ---------- */
+  #hud{position:fixed; inset:0; z-index:20; pointer-events:none; opacity:0; transition:opacity .8s ease;}
+  #hud.visible{opacity:1;}
+
+  .nameplate{
+    position:absolute; top:18px; left:18px; pointer-events:auto;
+    background:var(--panel); border:1px solid var(--border); border-radius:6px;
+    padding:10px 18px; backdrop-filter:blur(6px);
+  }
+  .nameplate .n{font-family:var(--font-display); font-weight:600; font-size:15px; color:var(--gold-bright);}
+  .nameplate .r{font-size:12px; color:var(--text-dim); letter-spacing:.04em; margin-top:2px;}
+
+  #progress-wrap{
+    position:absolute; top:18px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    pointer-events:auto;
+  }
+  #progress-label{font-size:11px; letter-spacing:.2em; color:var(--text-dim); font-weight:600;}
+  #progress-bar{display:flex; gap:5px;}
+  .seg{
+    width:64px; height:10px; border-radius:3px;
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+    position:relative; overflow:hidden; cursor:pointer; transition:transform .15s ease;
+  }
+  .seg:hover{transform:scaleY(1.3);}
+  .seg .fill{
+    position:absolute; inset:0; transform:scaleX(0); transform-origin:left;
+    transition:transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .seg.visited .fill{transform:scaleX(1);}
+  .seg[data-key="about"] .fill{background:linear-gradient(90deg,#1fae63,var(--emerald));}
+  .seg[data-key="skills"] .fill{background:linear-gradient(90deg,#1f7fc9,var(--blue));}
+  .seg[data-key="projects"] .fill{background:linear-gradient(90deg,#6b3fd6,var(--purple));}
+  .seg[data-key="contact"] .fill{background:linear-gradient(90deg,#a3801f,var(--gold));}
+  .seg.visited{box-shadow:0 0 10px currentColor;}
+
+  #quicknav{position:absolute; top:60px; left:50%; transform:translateX(-50%); display:flex; gap:8px; pointer-events:auto;}
+  .nav-chip{
+    font-family:var(--font-body); font-size:12px; font-weight:600; letter-spacing:.03em;
+    padding:5px 12px; border-radius:20px; cursor:pointer;
+    border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.04);
+    color:var(--text-dim); transition:all .2s ease;
+  }
+  .nav-chip:hover{color:var(--text); border-color:var(--gold); background:rgba(212,175,55,0.1);}
+
+  #hint-box{
+    position:absolute; top:110px; left:18px; pointer-events:none;
+    background:var(--panel); border:1px solid var(--border); border-radius:6px;
+    padding:10px 14px; font-size:12px; color:var(--text-dim); max-width:210px; line-height:1.6;
+    transition:opacity .6s ease;
+  }
+  #hint-box b{color:var(--gold-bright);}
+
+  #interact-prompt{
+    position:absolute; bottom:130px; left:50%; transform:translateX(-50%) translateY(10px);
+    background:var(--panel); border:1px solid var(--gold); border-radius:8px;
+    padding:10px 22px; text-align:center; opacity:0; transition:opacity .25s ease, transform .25s ease;
+    pointer-events:none; white-space:nowrap;
+  }
+  #interact-prompt.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  #interact-prompt .title{font-family:var(--font-display); font-size:14px; color:var(--gold-bright);}
+  #interact-prompt .sub{font-size:11px; color:var(--text-dim); margin-top:2px;}
+  #interact-prompt kbd{
+    display:inline-block; padding:1px 7px; border:1px solid var(--gold); border-radius:4px;
+    color:var(--gold-bright); font-family:var(--font-display); font-size:12px; margin:0 2px;
+  }
+
+  #minimap-wrap{
+    position:absolute; bottom:18px; left:18px; pointer-events:auto;
+  }
+  #minimap{
+    width:150px; height:150px; border-radius:50%;
+    border:2px solid var(--border); background:rgba(6,10,24,0.75);
+    box-shadow:0 0 20px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.6);
+  }
+
+  #dpad{
+    position:absolute; bottom:18px; right:18px; pointer-events:auto;
+    display:none; grid-template-columns:52px 52px 52px; grid-template-rows:52px 52px;
+    gap:6px;
+  }
+  #dpad.visible{display:grid;}
+  .dbtn{
+    background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; color:var(--gold-bright); font-family:var(--font-display);
+  }
+  .dbtn:active{background:rgba(212,175,55,0.25);}
+  #btn-up{grid-column:2; grid-row:1;}
+  #btn-left{grid-column:1; grid-row:2;}
+  #btn-down{grid-column:2; grid-row:2;}
+  #btn-right{grid-column:3; grid-row:2;}
+
+  #interact-btn{
+    position:absolute; bottom:90px; right:18px; pointer-events:auto; display:none;
+    width:64px; height:64px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #7a5c10);
+    border:2px solid var(--gold-bright); color:#1a1206;
+    font-family:var(--font-display); font-weight:700; font-size:14px;
+    box-shadow:0 0 18px rgba(212,175,55,0.5);
+  }
+  #interact-btn.visible{display:block;}
+
+  /* ---------- Modal ---------- */
+  #modal-overlay{
+    position:fixed; inset:0; z-index:60; display:flex; align-items:center; justify-content:center;
+    background:rgba(3,5,14,0.72); backdrop-filter:blur(6px);
+    opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s ease;
+    padding:20px;
+  }
+  #modal-overlay.open{opacity:1; visibility:visible;}
+  #modal-card{
+    width:100%; max-width:620px; max-height:82vh; overflow-y:auto;
+    background:linear-gradient(180deg, var(--panel-light), var(--panel));
+    border:1px solid var(--accent, var(--gold)); border-radius:10px;
+    box-shadow:0 0 60px var(--accent-glow, rgba(212,175,55,0.25)), 0 20px 60px rgba(0,0,0,0.6);
+    padding:34px 32px 28px;
+    transform:translateY(24px) scale(.97); transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  #modal-overlay.open #modal-card{transform:translateY(0) scale(1);}
+  #modal-card::-webkit-scrollbar{width:6px;}
+  #modal-card::-webkit-scrollbar-thumb{background:var(--accent, var(--gold)); border-radius:3px;}
+
+  .modal-eyebrow{
+    font-size:12px; letter-spacing:.25em; font-weight:600; color:var(--accent, var(--gold));
+    display:flex; align-items:center; gap:8px; margin-bottom:8px;
+  }
+  .modal-eyebrow .dot{width:7px; height:7px; border-radius:50%; background:var(--accent, var(--gold)); box-shadow:0 0 8px var(--accent, var(--gold));}
+  #modal-title{
+    font-family:var(--font-display); font-weight:700; font-size:26px; color:var(--text); margin-bottom:16px;
+  }
+  #modal-body{font-size:16px; line-height:1.7; color:var(--text-dim);}
+  #modal-body p{margin-bottom:14px;}
+  #modal-body .skill-group{margin-bottom:16px;}
+  #modal-body .skill-group h4{
+    font-family:var(--font-body); font-size:12px; letter-spacing:.12em; color:var(--gold-bright);
+    font-weight:700; margin-bottom:8px; text-transform:uppercase;
+  }
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-size:13px; padding:6px 12px; border-radius:20px; color:var(--text);
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15);
+  }
+  .proj-card{
+    border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:16px 18px; margin-bottom:14px;
+    background:rgba(255,255,255,0.03);
+  }
+  .proj-card h4{font-family:var(--font-display); font-size:17px; color:var(--text); margin-bottom:6px;}
+  .proj-card p{font-size:14px; margin-bottom:12px; color:var(--text-dim);}
+  .link-btn{
+    display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600;
+    padding:9px 16px; border-radius:6px; text-decoration:none; color:#0e0c18;
+    background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+    transition:transform .15s ease;
+  }
+  .link-btn:hover{transform:translateY(-1px);}
+  .link-btn svg{width:15px; height:15px;}
+  .contact-row{display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08);}
+  .contact-row:last-child{border-bottom:none;}
+  .contact-row .ic{
+    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:rgba(212,175,55,0.12); border:1px solid var(--border); flex-shrink:0;
+  }
+  .contact-row .ic svg{width:18px; height:18px; fill:var(--gold-bright);}
+  .contact-row a, .contact-row span{color:var(--text); font-size:15px; text-decoration:none; word-break:break-all;}
+  .contact-row a:hover{color:var(--gold-bright);}
+  .contact-row .lbl{font-size:11px; color:var(--text-dim); letter-spacing:.08em;}
+
+  #modal-close{
+    position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
+    border:1px solid var(--border); background:rgba(0,0,0,0.3); color:var(--text-dim);
+    cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center;
+    pointer-events:auto;
+  }
+  #modal-close:hover{color:var(--gold-bright); border-color:var(--gold);}
+  #modal-outer{position:relative; width:100%; display:flex; justify-content:center;}
+
+  @media (max-width:640px){
+    #modal-card{padding:26px 20px 22px;}
+    #modal-title{font-size:21px;}
+    #quicknav{display:none;}
+    #hint-box{display:none;}
+  }
+</style>
 </head>
-
-
 <body>
 
-    <!-- =========================================================
-         THREE.JS BACKGROUND
-    ========================================================== -->
-
-    <div id="three-container"></div>
-
-    <div class="background-glow"></div>
-    <div class="background-glow two"></div>
-
-
-    <!-- =========================================================
-         NAVBAR
-    ========================================================== -->
-
-    <nav>
-
-        <div class="nav-content">
-
-            <a href="#inicio" class="logo">
-                DJ<span>.</span>
-            </a>
-
-            <ul class="nav-links" id="navLinks">
-                <li>
-                    <a href="#sobre">Sobre</a>
-                </li>
-
-                <li>
-                    <a href="#habilidades">Habilidades</a>
-                </li>
-
-                <li>
-                    <a href="#projetos">Projetos</a>
-                </li>
-
-                <li>
-                    <a href="#experiencia">Experiência</a>
-                </li>
-
-                <li>
-                    <a href="#contato" class="nav-button">
-                        Contato
-                    </a>
-                </li>
-            </ul>
-
-            <button
-                class="menu-button"
-                id="menuButton"
-                aria-label="Abrir menu"
-            >
-                ☰
-            </button>
-
-        </div>
-
-    </nav>
-
-
-    <!-- =========================================================
-         HERO
-    ========================================================== -->
-
-    <main id="inicio">
-
-        <div class="hero">
-
-            <div class="hero-content">
-
-                <div class="availability">
-                    <span class="availability-dot"></span>
-                    Desenvolvedora &nbsp;•&nbsp; Tecnologia &nbsp;•&nbsp; Criatividade
-                </div>
-
-                <h1>
-                    Criando
-                    <span class="pink">experiências</span>
-                    digitais.
-                </h1>
-
-                <p class="hero-description">
-                    Olá, eu sou <strong>Djhessica Brati de Lima</strong>.
-                    Desenvolvedora apaixonada por tecnologia, interfaces
-                    modernas, sistemas web e soluções que transformam
-                    ideias em experiências digitais.
-                </p>
-
-                <div class="hero-actions">
-
-                    <a
-                        href="#projetos"
-                        class="button button-primary"
-                    >
-                        Ver meus projetos →
-                    </a>
-
-                    <a
-                        href="#contato"
-                        class="button button-secondary"
-                    >
-                        Vamos conversar
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <div class="hero-visual">
-
-                <div class="orb"></div>
-
-                <div class="floating-card one">
-                    <span>const</span> developer = "creative";
-                </div>
-
-                <div class="floating-card two">
-                    <span>&lt;/&gt;</span> build · design · deploy
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================================================
-             MARQUEE
-        ====================================================== -->
-
-        <div class="marquee">
-
-            <div class="marquee-content">
-
-                <div class="marquee-item">Web Development</div>
-                <div class="marquee-item">React</div>
-                <div class="marquee-item">Java</div>
-                <div class="marquee-item">Spring Boot</div>
-                <div class="marquee-item">JavaScript</div>
-                <div class="marquee-item">UI Design</div>
-                <div class="marquee-item">MySQL</div>
-                <div class="marquee-item">Three.js</div>
-
-                <div class="marquee-item">Web Development</div>
-                <div class="marquee-item">React</div>
-                <div class="marquee-item">Java</div>
-                <div class="marquee-item">Spring Boot</div>
-                <div class="marquee-item">JavaScript</div>
-                <div class="marquee-item">UI Design</div>
-                <div class="marquee-item">MySQL</div>
-                <div class="marquee-item">Three.js</div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =====================================================
-             SOBRE
-        ====================================================== -->
-
-        <section id="sobre" class="reveal">
-
-            <div class="section-header">
-
-                <div class="section-number">
-                    01 / SOBRE
-                </div>
-
-                <h2 class="section-title">
-                    Quem está<br>
-                    por trás do código?
-                </h2>
-
-            </div>
-
-
-            <div class="about-grid">
-
-                <div class="about-text">
-
-                    <p>
-                        Sou uma desenvolvedora focada em criar soluções
-                        digitais com uma combinação de
-                        <span class="about-highlight">
-                            tecnologia, organização e criatividade.
-                        </span>
-                    </p>
-
-                    <p>
-                        Tenho experiência no desenvolvimento de aplicações
-                        web, integração entre frontend e backend, bancos de
-                        dados e construção de interfaces responsivas.
-                    </p>
-
-                    <p>
-                        Gosto de transformar problemas complexos em
-                        experiências simples, intuitivas e visualmente
-                        marcantes.
-                    </p>
-
-                </div>
-
-
-                <div class="stats">
-
-                    <div class="stat-card">
-
-                        <div class="stat-number">
-                            01
-                        </div>
-
-                        <div class="stat-label">
-                            Frontend & UI
-                        </div>
-
-                    </div>
-
-                    <div class="stat-card">
-
-                        <div class="stat-number">
-                            02
-                        </div>
-
-                        <div class="stat-label">
-                            Backend & APIs
-                        </div>
-
-                    </div>
-
-                    <div class="stat-card">
-
-                        <div class="stat-number">
-                            03
-                        </div>
-
-                        <div class="stat-label">
-                            Banco de Dados
-                        </div>
-
-                    </div>
-
-                    <div class="stat-card">
-
-                        <div class="stat-number">
-                            04
-                        </div>
-
-                        <div class="stat-label">
-                            UX & Design
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             HABILIDADES
-        ====================================================== -->
-
-        <section id="habilidades" class="reveal">
-
-            <div class="section-header">
-
-                <div class="section-number">
-                    02 / HABILIDADES
-                </div>
-
-                <h2 class="section-title">
-                    Ferramentas que<br>
-                    transformam ideias.
-                </h2>
-
-                <p class="section-description">
-                    Tecnologias que fazem parte da minha jornada de
-                    desenvolvimento e criação de soluções digitais.
-                </p>
-
-            </div>
-
-
-            <div class="skills-grid">
-
-                <div class="skill">
-
-                    <div class="skill-icon">
-                        01 / FRONTEND
-                    </div>
-
-                    <h3>HTML & CSS</h3>
-
-                    <p>
-                        Interfaces responsivas, modernas e acessíveis.
-                    </p>
-
-                </div>
-
-
-                <div class="skill">
-
-                    <div class="skill-icon">
-                        02 / LOGIC
-                    </div>
-
-                    <h3>JavaScript</h3>
-
-                    <p>
-                        Interatividade, lógica e experiências dinâmicas.
-                    </p>
-
-                </div>
-
-
-                <div class="skill">
-
-                    <div class="skill-icon">
-                        03 / FRAMEWORK
-                    </div>
-
-                    <h3>React</h3>
-
-                    <p>
-                        Aplicações modernas baseadas em componentes.
-                    </p>
-
-                </div>
-
-
-                <div class="skill">
-
-                    <div class="skill-icon">
-                        04 / BACKEND
-                    </div>
-
-                    <h3>Java + Spring</h3>
-
-                    <p>
-                        APIs, regras de negócio e aplicações backend.
-                    </p>
-
-                </div>
-
-
-                <div class="skill">
-
-                    <div class="skill-icon">
-                        05 / DATABASE
-                    </div>
-
-                    <h3>MySQL</h3>
-
-                    <p>
-                        Modelagem, relacionamentos e gerenciamento de dados.
-                    </p>
-
-                </div>
-
-
-                <div class="skill">
-
-                    <div class="skill-icon">
-                        06 / 3D
-                    </div>
-
-                    <h3>Three.js</h3>
-
-                    <p>
-                        Experiências visuais e elementos 3D para web.
-                    </p>
-
-                </div>
-
-
-                <div class="skill">
-
-                    <div class="skill-icon">
-                        07 / DESIGN
-                    </div>
-
-                    <h3>UI / UX</h3>
-
-                    <p>
-                        Interfaces intuitivas com foco na experiência.
-                    </p>
-
-                </div>
-
-
-                <div class="skill">
-
-                    <div class="skill-icon">
-                        08 / VERSION
-                    </div>
-
-                    <h3>Git & GitHub</h3>
-
-                    <p>
-                        Versionamento e organização de projetos.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             PROJETOS
-        ====================================================== -->
-
-        <section id="projetos" class="reveal">
-
-            <div class="section-header">
-
-                <div class="section-number">
-                    03 / PROJETOS
-                </div>
-
-                <h2 class="section-title">
-                    Projetos que<br>
-                    saíram do papel.
-                </h2>
-
-                <p class="section-description">
-                    Alguns dos projetos que representam minha evolução
-                    em desenvolvimento, banco de dados, frontend e backend.
-                </p>
-
-            </div>
-
-
-            <div class="projects">
-
-
-                <!-- PROJETO 01 -->
-
-                <article class="project">
-
-                    <div>
-
-                        <div class="project-number">
-                            PROJECT / 01
-                        </div>
-
-                        <h3>
-                            Gestão de Pregões
-                        </h3>
-
-                        <p>
-                            Plataforma para centralizar operações de uma
-                            empresa que participa de Pregões Eletrônicos,
-                            incluindo autenticação, documentos, propostas,
-                            notificações, editais e relatórios.
-                        </p>
-
-                        <div class="project-tags">
-
-                            <span class="tag">React</span>
-                            <span class="tag">Java</span>
-                            <span class="tag">Spring Boot</span>
-                            <span class="tag">MySQL</span>
-
-                        </div>
-
-                    </div>
-
-                    <a
-                        href="https://github.com/"
-                        target="_blank"
-                        class="project-link"
-                    >
-                        Ver projeto no GitHub ↗
-                    </a>
-
-                </article>
-
-
-                <!-- PROJETO 02 -->
-
-                <article class="project">
-
-                    <div>
-
-                        <div class="project-number">
-                            PROJECT / 02
-                        </div>
-
-                        <h3>
-                            Biblioteca SENAI
-                        </h3>
-
-                        <p>
-                            Sistema para cadastro, gerenciamento e reserva
-                            de salas e computadores, com diferentes níveis
-                            de acesso para usuários e administração.
-                        </p>
-
-                        <div class="project-tags">
-
-                            <span class="tag">React</span>
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">Tailwind</span>
-                            <span class="tag">LocalStorage</span>
-
-                        </div>
-
-                    </div>
-
-                    <a
-                        href="https://github.com/"
-                        target="_blank"
-                        class="project-link"
-                    >
-                        Ver projeto no GitHub ↗
-                    </a>
-
-                </article>
-
-
-                <!-- PROJETO 03 -->
-
-                <article class="project">
-
-                    <div>
-
-                        <div class="project-number">
-                            PROJECT / 03
-                        </div>
-
-                        <h3>
-                            Guarda-Vidas
-                        </h3>
-
-                        <p>
-                            Aplicação web pensada para apoiar atividades
-                            relacionadas ao trabalho de guarda-vidas,
-                            utilizando uma interface moderna, responsiva
-                            e orientada à usabilidade.
-                        </p>
-
-                        <div class="project-tags">
-
-                            <span class="tag">React</span>
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">Tailwind</span>
-                            <span class="tag">UI/UX</span>
-
-                        </div>
-
-                    </div>
-
-                    <a
-                        href="https://github.com/"
-                        target="_blank"
-                        class="project-link"
-                    >
-                        Ver projeto no GitHub ↗
-                    </a>
-
-                </article>
-
-
-                <!-- PROJETO 04 -->
-
-                <article class="project">
-
-                    <div>
-
-                        <div class="project-number">
-                            PROJECT / 04
-                        </div>
-
-                        <h3>
-                            SaúdeCriciúma
-                        </h3>
-
-                        <p>
-                            Conceito de plataforma digital para facilitar
-                            o agendamento e organização de atendimentos
-                            de saúde, priorizando clareza e experiência
-                            do usuário.
-                        </p>
-
-                        <div class="project-tags">
-
-                            <span class="tag">UX</span>
-                            <span class="tag">UI</span>
-                            <span class="tag">Web</span>
-                            <span class="tag">Prototype</span>
-
-                        </div>
-
-                    </div>
-
-                    <a
-                        href="https://github.com/"
-                        target="_blank"
-                        class="project-link"
-                    >
-                        Ver projeto no GitHub ↗
-                    </a>
-
-                </article>
-
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             EXPERIÊNCIA
-        ====================================================== -->
-
-        <section id="experiencia" class="reveal">
-
-            <div class="section-header">
-
-                <div class="section-number">
-                    04 / PROCESSO
-                </div>
-
-                <h2 class="section-title">
-                    Como eu<br>
-                    construo.
-                </h2>
-
-            </div>
-
-
-            <div class="timeline">
-
-                <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        01 — IDEIA
-                    </div>
-
-                    <h3>
-                        Entender o problema
-                    </h3>
-
-                    <p>
-                        Antes de escrever código, busco compreender o
-                        problema, os usuários e o objetivo da solução.
-                    </p>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        02 — PLANEJAMENTO
-                    </div>
-
-                    <h3>
-                        Estruturar a solução
-                    </h3>
-
-                    <p>
-                        Organizo funcionalidades, dados, arquitetura,
-                        fluxos e componentes para transformar a ideia
-                        em uma estrutura funcional.
-                    </p>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        03 — DESENVOLVIMENTO
-                    </div>
-
-                    <h3>
-                        Criar e integrar
-                    </h3>
-
-                    <p>
-                        Desenvolvo frontend, backend, APIs e banco de
-                        dados buscando manter o projeto organizado,
-                        escalável e intuitivo.
-                    </p>
-
-                </div>
-
-
-                <div class="timeline-item">
-
-                    <div class="timeline-date">
-                        04 — EVOLUÇÃO
-                    </div>
-
-                    <h3>
-                        Testar, melhorar e entregar
-                    </h3>
-
-                    <p>
-                        Testo a solução, identifico melhorias e evoluo
-                        continuamente a experiência final.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             CONTATO
-        ====================================================== -->
-
-        <section id="contato" class="reveal">
-
-            <div class="contact-box">
-
-                <h2>
-                    Vamos criar algo
-                    <span style="color:#ff2f92">
-                        incrível?
-                    </span>
-                </h2>
-
-                <p>
-                    Estou sempre aberta a novos projetos, oportunidades,
-                    colaborações e desafios que envolvam tecnologia e
-                    criatividade.
-                </p>
-
-                <div class="contact-links">
-
-                    <a
-                        href="https://github.com/djhessica"
-                        target="_blank"
-                        class="button button-primary"
-                    >
-                        GitHub ↗
-                    </a>
-
-                    <a
-                        href="mailto:djhessicabratidelima@gmail.com"
-                        class="button button-secondary"
-                    >
-                        E-mail →
-                    </a>
-
-                    <a
-                        href="https://www.linkedin.com/in/djhessica-brati-de-lima-86915230b/"
-                        target="_blank"
-                        class="button button-secondary"
-                    >
-                        LinkedIn ↗
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================================================
-         FOOTER
-    ========================================================== -->
-
-    <footer>
-
-        <div>
-            © 2026 Djhessica Brati de Lima
-        </div>
-
-        <div>
-            Built with <span>♥</span> & code
-        </div>
-
-    </footer>
-
-
-    <!-- =========================================================
-         JAVASCRIPT
-    ========================================================== -->
-
-    <script>
-
-        /* =====================================================
-           MENU MOBILE
-        ====================================================== */
-
-        const menuButton = document.getElementById("menuButton");
-        const navLinks = document.getElementById("navLinks");
-
-        menuButton.addEventListener("click", () => {
-
-            navLinks.classList.toggle("active");
-
-        });
-
-
-        document.querySelectorAll(".nav-links a").forEach(link => {
-
-            link.addEventListener("click", () => {
-
-                navLinks.classList.remove("active");
-
-            });
-
-        });
-
-
-        /* =====================================================
-           SCROLL REVEAL
-        ====================================================== */
-
-        const revealElements =
-            document.querySelectorAll(".reveal");
-
-        const revealObserver = new IntersectionObserver(
-
-            entries => {
-
-                entries.forEach(entry => {
-
-                    if (entry.isIntersecting) {
-
-                        entry.target.classList.add("active");
-
-                    }
-
-                });
-
-            },
-
-            {
-                threshold: 0.12
-            }
-
-        );
-
-
-        revealElements.forEach(element => {
-
-            revealObserver.observe(element);
-
-        });
-
-
-        /* =====================================================
-           THREE.JS
-        ====================================================== */
-
-        const container =
-            document.getElementById("three-container");
-
-
-        const scene = new THREE.Scene();
-
-
-        const camera =
-            new THREE.PerspectiveCamera(
-                75,
-                window.innerWidth / window.innerHeight,
-                0.1,
-                1000
-            );
-
-
-        camera.position.z = 8;
-
-
-        const renderer =
-            new THREE.WebGLRenderer({
-                alpha: true,
-                antialias: true
-            });
-
-
-        renderer.setPixelRatio(
-            Math.min(window.devicePixelRatio, 2)
-        );
-
-
-        renderer.setSize(
-            window.innerWidth,
-            window.innerHeight
-        );
-
-
-        container.appendChild(renderer.domElement);
-
-
-        /* =====================================================
-           PARTÍCULAS
-        ====================================================== */
-
-        const particleCount = 1000;
-
-        const positions =
-            new Float32Array(
-                particleCount * 3
-            );
-
-
-        for (let i = 0; i < particleCount * 3; i++) {
-
-            positions[i] =
-                (Math.random() - 0.5) * 25;
-
-        }
-
-
-        const particleGeometry =
-            new THREE.BufferGeometry();
-
-
-        particleGeometry.setAttribute(
-            "position",
-            new THREE.BufferAttribute(
-                positions,
-                3
-            )
-        );
-
-
-        const particleMaterial =
-            new THREE.PointsMaterial({
-
-                color: 0xff2f92,
-
-                size: 0.018,
-
-                transparent: true,
-
-                opacity: 0.55
-
-            });
-
-
-        const particles =
-            new THREE.Points(
-                particleGeometry,
-                particleMaterial
-            );
-
-
-        scene.add(particles);
-
-
-        /* =====================================================
-           TORUS
-        ====================================================== */
-
-        const torusGeometry =
-            new THREE.TorusGeometry(
-                3.5,
-                0.005,
-                16,
-                100
-            );
-
-
-        const torusMaterial =
-            new THREE.MeshBasicMaterial({
-
-                color: 0xff2f92,
-
-                transparent: true,
-
-                opacity: 0.12
-
-            });
-
-
-        const torus =
-            new THREE.Mesh(
-                torusGeometry,
-                torusMaterial
-            );
-
-
-        torus.rotation.x = Math.PI / 2;
-
-        scene.add(torus);
-
-
-        /* =====================================================
-           SEGUNDO TORUS
-        ====================================================== */
-
-        const torus2 =
-            new THREE.Mesh(
-                torusGeometry,
-                torusMaterial
-            );
-
-
-        torus2.rotation.y = Math.PI / 2;
-
-        scene.add(torus2);
-
-
-        /* =====================================================
-           MOUSE
-        ====================================================== */
-
-        let mouseX = 0;
-        let mouseY = 0;
-
-        window.addEventListener(
-            "mousemove",
-            event => {
-
-                mouseX =
-                    (event.clientX / window.innerWidth)
-                    - 0.5;
-
-                mouseY =
-                    (event.clientY / window.innerHeight)
-                    - 0.5;
-
-            }
-        );
-
-
-        /* =====================================================
-           ANIMAÇÃO
-        ====================================================== */
-
-        const clock = new THREE.Clock();
-
-
-        function animate() {
-
-            requestAnimationFrame(animate);
-
-            const elapsed =
-                clock.getElapsedTime();
-
-
-            particles.rotation.y =
-                elapsed * 0.008;
-
-            particles.rotation.x =
-                elapsed * 0.003;
-
-
-            torus.rotation.z =
-                elapsed * 0.08;
-
-            torus.rotation.x =
-                Math.PI / 2 +
-                mouseY * 0.15;
-
-
-            torus2.rotation.z =
-                -elapsed * 0.06;
-
-            torus2.rotation.y =
-                Math.PI / 2 +
-                mouseX * 0.15;
-
-
-            camera.position.x +=
-                (mouseX * 0.25 - camera.position.x)
-                * 0.02;
-
-
-            camera.position.y +=
-                (-mouseY * 0.25 - camera.position.y)
-                * 0.02;
-
-
-            camera.lookAt(
-                scene.position
-            );
-
-
-            renderer.render(
-                scene,
-                camera
-            );
-
-        }
-
-
-        animate();
-
-
-        /* =====================================================
-           RESPONSIVIDADE THREE.JS
-        ====================================================== */
-
-        window.addEventListener(
-            "resize",
-            () => {
-
-                camera.aspect =
-                    window.innerWidth /
-                    window.innerHeight;
-
-                camera.updateProjectionMatrix();
-
-
-                renderer.setSize(
-                    window.innerWidth,
-                    window.innerHeight
-                );
-
-            }
-        );
-
-
-        /* =====================================================
-           EFEITO PARALLAX NOS CARDS
-        ====================================================== */
-
-        const cards =
-            document.querySelectorAll(
-                ".project, .skill, .stat-card"
-            );
-
-
-        cards.forEach(card => {
-
-            card.addEventListener(
-                "mousemove",
-                event => {
-
-                    const rect =
-                        card.getBoundingClientRect();
-
-                    const x =
-                        event.clientX -
-                        rect.left;
-
-                    const y =
-                        event.clientY -
-                        rect.top;
-
-
-                    const rotateX =
-                        ((y / rect.height) - 0.5) * -4;
-
-                    const rotateY =
-                        ((x / rect.width) - 0.5) * 4;
-
-
-                    card.style.transform =
-                        `
-                        translateY(-5px)
-                        perspective(600px)
-                        rotateX(${rotateX}deg)
-                        rotateY(${rotateY}deg)
-                        `;
-
-                }
-            );
-
-
-            card.addEventListener(
-                "mouseleave",
-                () => {
-
-                    card.style.transform =
-                        "";
-
-                }
-            );
-
-        });
-
-    </script>
-
+<div id="canvas-root"></div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-eyebrow">PORTFÓLIO INTERATIVO</div>
+  <div class="intro-title">Djhessica Brati de Lima</div>
+  <p class="intro-sub">Explore o mapa, aproxime-se dos cristais e descubra minha trajetória, habilidades e projetos como desenvolvedora.</p>
+  <div class="intro-controls">
+    <div class="key-hint"><div class="key-badges"><div class="key">W</div></div>Mover</div>
+    <div class="key-hint"><div class="key-badges"><div class="key">A</div><div class="key">S</div><div class="key">D</div></div>Direção</div>
+    <div class="key-hint"><div class="key-badges"><div class="key">E</div></div>Interagir</div>
+    <div class="key-hint"><div class="key-badges"><div class="key">🖱</div></div>Orbitar câmera</div>
+  </div>
+  <button id="start-btn">Começar Jornada</button>
+</div>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="nameplate">
+    <div class="n">Djhessica Brati de Lima</div>
+    <div class="r">Desenvolvedora · Formação SENAI</div>
+  </div>
+
+  <div id="progress-wrap">
+    <div id="progress-label">PROGRESSO DA EXPLORAÇÃO</div>
+    <div id="progress-bar">
+      <div class="seg" data-key="about"><div class="fill"></div></div>
+      <div class="seg" data-key="skills"><div class="fill"></div></div>
+      <div class="seg" data-key="projects"><div class="fill"></div></div>
+      <div class="seg" data-key="contact"><div class="fill"></div></div>
+    </div>
+  </div>
+
+  <div id="quicknav">
+    <div class="nav-chip" data-key="about">Sobre Mim</div>
+    <div class="nav-chip" data-key="skills">Habilidades</div>
+    <div class="nav-chip" data-key="projects">Projetos</div>
+    <div class="nav-chip" data-key="contact">Contato</div>
+  </div>
+
+  <div id="hint-box">
+    <b>WASD</b> para mover · <b>Mouse</b> para orbitar a câmera · <b>E</b> para interagir com os cristais · clique nos nomes acima para ir direto a uma seção.
+  </div>
+
+  <div id="interact-prompt">
+    <div class="title" id="interact-title"></div>
+    <div class="sub">Pressione <kbd>E</kbd> para interagir</div>
+  </div>
+
+  <div id="minimap-wrap"><canvas id="minimap" width="150" height="150"></canvas></div>
+
+  <div id="dpad">
+    <div class="dbtn" id="btn-up">▲</div>
+    <div class="dbtn" id="btn-left">◀</div>
+    <div class="dbtn" id="btn-down">▼</div>
+    <div class="dbtn" id="btn-right">▶</div>
+  </div>
+  <div id="interact-btn">E</div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay">
+  <div id="modal-outer">
+    <div id="modal-card">
+      <div id="modal-close">✕</div>
+      <div class="modal-eyebrow"><span class="dot"></span><span id="modal-eyebrow-text"></span></div>
+      <div id="modal-title"></div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   CONTEÚDO DO PORTFÓLIO — dados reais fornecidos pela usuária
+   ============================================================ */
+const ICONS = {
+  github:`<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.27 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.51.35 1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>`,
+  linkedin:`<svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 1 1-4-.02 2 2 0 0 1 4 .02ZM3.3 8.75h3.6V21H3.3V8.75Zm6.2 0h3.45v1.68h.05c.48-.9 1.66-1.86 3.42-1.86 3.66 0 4.33 2.41 4.33 5.54V21h-3.6v-6.19c0-1.48-.03-3.38-2.06-3.38-2.07 0-2.38 1.62-2.38 3.28V21H9.5V8.75Z"/></svg>`,
+  mail:`<svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1.4 2 7.1 5.6a1 1 0 0 0 1 0L19.6 7H4.4ZM4 8.4V18h16V8.4l-6.9 5.5a2 2 0 0 1-2.2 0L4 8.4Z"/></svg>`
+};
+
+const CONTENT = {
+  about:{
+    label:"Sobre Mim", color:0x2ecc82, accent:"#2ecc82", glow:"rgba(46,204,130,0.35)",
+    eyebrow:"IDENTIDADE",
+    title:"Sobre Mim",
+    render:()=>`
+      <p>Sou <strong style="color:#fff">Djhessica Brati de Lima</strong>, desenvolvedora em formação pelo SENAI, apaixonada por tecnologia e pela criação de experiências digitais interativas.</p>
+      <p>Tenho foco em desenvolvimento web e busco unir criatividade com soluções técnicas eficientes. Meu objetivo é evoluir constantemente como profissional e transformar ideias em projetos inovadores — como este próprio portfólio, construído como um jogo 3D.</p>
+    `
+  },
+  skills:{
+    label:"Habilidades", color:0x3aa0ff, accent:"#3aa0ff", glow:"rgba(58,160,255,0.35)",
+    eyebrow:"ARSENAL TÉCNICO",
+    title:"Habilidades Técnicas",
+    render:()=>`
+      <div class="skill-group"><h4>Front-end</h4><div class="chip-row">
+        <span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript (ES6+)</span><span class="chip">React</span>
+      </div></div>
+      <div class="skill-group"><h4>Back-end</h4><div class="chip-row">
+        <span class="chip">Node.js</span><span class="chip">Express</span>
+      </div></div>
+      <div class="skill-group"><h4>Banco de Dados</h4><div class="chip-row">
+        <span class="chip">MySQL</span><span class="chip">MongoDB</span>
+      </div></div>
+      <div class="skill-group"><h4>3D / Interatividade</h4><div class="chip-row">
+        <span class="chip">Three.js</span>
+      </div></div>
+      <div class="skill-group"><h4>Ferramentas e Versionamento</h4><div class="chip-row">
+        <span class="chip">Git</span><span class="chip">GitHub</span>
+      </div></div>
+      <div class="skill-group"><h4>Outros Conhecimentos</h4><div class="chip-row">
+        <span class="chip">Design responsivo</span><span class="chip">Integração de APIs</span><span class="chip">Lógica de programação</span>
+      </div></div>
+    `
+  },
+  projects:{
+    label:"Projetos", color:0x8a5cf6, accent:"#8a5cf6", glow:"rgba(138,92,246,0.35)",
+    eyebrow:"REALIZAÇÕES",
+    title:"Projetos",
+    render:()=>`
+      <div class="proj-card">
+        <h4>GuardaVidas</h4>
+        <p>Projeto desenvolvido durante a formação técnica, aplicando lógica de programação e boas práticas de desenvolvimento.</p>
+        <a class="link-btn" href="https://github.com/djhessica/GuardaVidas" target="_blank" rel="noopener">${ICONS.github} Ver repositório</a>
+      </div>
+      <div class="proj-card">
+        <h4>Festa Décor E-commerce</h4>
+        <p>Aplicação voltada para comércio eletrônico, explorando front-end e integração de funcionalidades de loja virtual.</p>
+        <a class="link-btn" href="https://github.com/djhessica/festa-decor-ecommerce" target="_blank" rel="noopener">${ICONS.github} Ver repositório</a>
+      </div>
+      <div class="proj-card">
+        <h4>Projeto Biblioteca (SENAI)</h4>
+        <p>Sistema full stack de biblioteca desenvolvido como projeto do SENAI, unindo front-end e back-end.</p>
+        <a class="link-btn" href="https://github.com/djhessica/Projeto-Biblioteca-frontEnd-e-backEnd" target="_blank" rel="noopener">${ICONS.github} Ver repositório</a>
+      </div>
+    `
+  },
+  contact:{
+    label:"Contato", color:0xd4af37, accent:"#d4af37", glow:"rgba(212,175,55,0.35)",
+    eyebrow:"VAMOS CONVERSAR",
+    title:"Contato",
+    render:()=>`
+      <div class="contact-row">
+        <div class="ic">${ICONS.github}</div>
+        <div><div class="lbl">GITHUB</div><a href="https://github.com/djhessica" target="_blank" rel="noopener">github.com/djhessica</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="ic">${ICONS.linkedin}</div>
+        <div><div class="lbl">LINKEDIN</div><a href="https://www.linkedin.com/feed/" target="_blank" rel="noopener">LinkedIn</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="ic">${ICONS.mail}</div>
+        <div><div class="lbl">E-MAIL</div><a href="mailto:djhessicabratidelima@gmail.com">djhessicabratidelima@gmail.com</a></div>
+      </div>
+    `
+  }
+};
+
+const TOTEM_LAYOUT = [
+  {key:"about",    angle:  Math.PI*0.25},
+  {key:"skills",   angle:  Math.PI*0.75},
+  {key:"projects", angle: -Math.PI*0.75},
+  {key:"contact",  angle: -Math.PI*0.25},
+];
+const RING_RADIUS = 24;
+
+/* ============================================================
+   ESTADO GLOBAL
+   ============================================================ */
+const state = {
+  keys:{}, cameraYaw:0.6, dragging:false, lastX:0,
+  visited:new Set(), modalOpen:false, nearest:null,
+  playerPos:new THREE.Vector3(0,0,10), playerVel:new THREE.Vector3(),
+  facing:0, clock:new THREE.Clock(), started:false,
+};
+
+/* ============================================================
+   THREE.JS — SETUP DE CENA
+   ============================================================ */
+const root = document.getElementById('canvas-root');
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x05070f);
+scene.fog = new THREE.FogExp2(0x070a18, 0.016);
+
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 500);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+root.appendChild(renderer.domElement);
+
+// Sky sphere (gradient interior)
+(function buildSky(){
+  const geo = new THREE.SphereGeometry(240, 24, 16);
+  const colors = [];
+  const pos = geo.attributes.position;
+  const top = new THREE.Color(0x120a2e);
+  const mid = new THREE.Color(0x1a2450);
+  const bot = new THREE.Color(0x0a0e22);
+  for(let i=0;i<pos.count;i++){
+    const y = pos.getY(i)/240;
+    let c;
+    if(y>0) c = top.clone().lerp(mid, 1-y);
+    else c = mid.clone().lerp(bot, -y);
+    colors.push(c.r,c.g,c.b);
+  }
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors,3));
+  const mat = new THREE.MeshBasicMaterial({vertexColors:true, side:THREE.BackSide, fog:false});
+  scene.add(new THREE.Mesh(geo, mat));
+})();
+
+// Estrelas / poeira mágica
+(function buildStars(){
+  const count = 500;
+  const positions = new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    const r = 90 + Math.random()*140;
+    const theta = Math.random()*Math.PI*2;
+    const phi = Math.random()*Math.PI*0.5 + 0.05;
+    positions[i*3] = r*Math.sin(phi)*Math.cos(theta);
+    positions[i*3+1] = r*Math.cos(phi)*0.6 + 20;
+    positions[i*3+2] = r*Math.sin(phi)*Math.sin(theta);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  const mat = new THREE.PointsMaterial({color:0xd4c8ff, size:1.1, transparent:true, opacity:.7, fog:false});
+  scene.add(new THREE.Points(geo, mat));
+})();
+
+// Luzes
+scene.add(new THREE.HemisphereLight(0x8fa8ff, 0x0d2015, 0.55));
+const sun = new THREE.DirectionalLight(0xffe9c2, 0.9);
+sun.position.set(30,45,20);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left = -45; sun.shadow.camera.right = 45;
+sun.shadow.camera.top = 45; sun.shadow.camera.bottom = -45;
+sun.shadow.camera.far = 150;
+sun.shadow.bias = -0.0015;
+scene.add(sun);
+scene.add(new THREE.AmbientLight(0x3a4a8a, 0.25));
+
+/* ------------- Terreno ------------- */
+const groundGeo = new THREE.CircleGeometry(70, 64);
+const groundMat = new THREE.MeshStandardMaterial({color:0x1c5c3a, roughness:1});
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI/2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// leve variação de cor no terreno (patches)
+(function grassPatches(){
+  const g = new THREE.CircleGeometry(1,10);
+  for(let i=0;i<70;i++){
+    const r = 8 + Math.random()*58;
+    const a = Math.random()*Math.PI*2;
+    const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({
+      color: Math.random()>0.5 ? 0x235f3f : 0x143f28, roughness:1
+    }));
+    m.scale.setScalar(2+Math.random()*4);
+    m.rotation.x = -Math.PI/2;
+    m.position.set(Math.cos(a)*r, 0.01, Math.sin(a)*r);
+    m.receiveShadow = true;
+    scene.add(m);
+  }
+})();
+
+// Hub central
+const hubGeo = new THREE.CylinderGeometry(6.2,6.6,0.6,32);
+const hubMat = new THREE.MeshStandardMaterial({color:0x3a3550, roughness:0.6, metalness:0.2});
+const hub = new THREE.Mesh(hubGeo, hubMat);
+hub.position.y = 0.3;
+hub.receiveShadow = true; hub.castShadow = true;
+scene.add(hub);
+const hubRim = new THREE.Mesh(new THREE.TorusGeometry(6.2,0.12,8,48), new THREE.MeshStandardMaterial({color:0xd4af37, emissive:0x8a6a10, emissiveIntensity:0.6, metalness:0.7, roughness:0.3}));
+hubRim.rotation.x = Math.PI/2; hubRim.position.y = 0.62;
+scene.add(hubRim);
+
+// Caminhos (do hub até cada totem)
+const pathMat = new THREE.MeshStandardMaterial({color:0x8a7a5a, roughness:1});
+TOTEM_LAYOUT.forEach(t=>{
+  const len = RING_RADIUS - 4;
+  const geo = new THREE.PlaneGeometry(3.2, len);
+  const p = new THREE.Mesh(geo, pathMat);
+  p.rotation.x = -Math.PI/2;
+  const midR = 4 + len/2;
+  p.position.set(Math.cos(t.angle)*midR, 0.02, Math.sin(t.angle)*midR);
+  p.rotation.z = -t.angle + Math.PI/2;
+  p.receiveShadow = true;
+  scene.add(p);
+});
+// Anel circular conectando totens
+const ringPath = new THREE.Mesh(new THREE.RingGeometry(RING_RADIUS-1.6, RING_RADIUS+1.6, 64), pathMat);
+ringPath.rotation.x = -Math.PI/2;
+ringPath.position.y = 0.015;
+ringPath.receiveShadow = true;
+scene.add(ringPath);
+
+// Rochas decorativas
+(function rocks(){
+  const geo = new THREE.DodecahedronGeometry(1,0);
+  for(let i=0;i<26;i++){
+    const r = 10 + Math.random()*55;
+    const a = Math.random()*Math.PI*2;
+    const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({color:0x555b6e, roughness:0.9, flatShading:true}));
+    const s = 0.4+Math.random()*0.9;
+    m.scale.set(s, s*(0.7+Math.random()*0.6), s);
+    m.position.set(Math.cos(a)*r, s*0.4, Math.sin(a)*r);
+    m.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);
+    m.castShadow = true; m.receiveShadow = true;
+    scene.add(m);
+  }
+})();
+
+// Postes de luz (estilo lampiões mágicos) ao longo do anel
+(function lampposts(){
+  for(let i=0;i<10;i++){
+    const a = (i/10)*Math.PI*2 + 0.3;
+    const base = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.12,0.16,2.6,8),
+      new THREE.MeshStandardMaterial({color:0x2b2b38, roughness:0.7, metalness:0.3})
+    );
+    base.position.set(Math.cos(a)*(RING_RADIUS+3.4), 1.3, Math.sin(a)*(RING_RADIUS+3.4));
+    base.castShadow = true;
+    scene.add(base);
+    const orbGeo = new THREE.SphereGeometry(0.22,12,12);
+    const orbMat = new THREE.MeshStandardMaterial({color:0xffd98a, emissive:0xffbb55, emissiveIntensity:1.4});
+    const orb = new THREE.Mesh(orbGeo, orbMat);
+    orb.position.set(base.position.x, 2.75, base.position.z);
+    scene.add(orb);
+    const l = new THREE.PointLight(0xffbb66, 0.8, 8);
+    l.position.copy(orb.position);
+    scene.add(l);
+  }
+})();
+
+/* ------------- Totens ------------- */
+const totemGroups = {};
+const totemMeshes = [];
+const particleSystems = [];
+
+function buildTotem(cfg){
+  const group = new THREE.Group();
+  const pos = new THREE.Vector3(Math.cos(cfg.angle)*RING_RADIUS, 0, Math.sin(cfg.angle)*RING_RADIUS);
+  group.position.copy(pos);
+
+  // Plataforma
+  const platform = new THREE.Mesh(
+    new THREE.CylinderGeometry(2.6,2.9,0.5,16),
+    new THREE.MeshStandardMaterial({color:0x2c2a3d, roughness:0.7})
+  );
+  platform.position.y = 0.25;
+  platform.receiveShadow = true; platform.castShadow = true;
+  group.add(platform);
+
+  // Base do totem (pedra empilhada)
+  for(let i=0;i<3;i++){
+    const s = 1.1 - i*0.22;
+    const seg = new THREE.Mesh(
+      new THREE.CylinderGeometry(s*0.9, s, 0.9, 6),
+      new THREE.MeshStandardMaterial({color:0x40465e, roughness:0.6, metalness:0.15})
+    );
+    seg.position.y = 0.6 + i*0.85;
+    seg.rotation.y = i*0.4;
+    seg.castShadow = true; seg.receiveShadow = true;
+    group.add(seg);
+  }
+
+  // Cristal flutuante
+  const crystal = new THREE.Mesh(
+    new THREE.OctahedronGeometry(0.85,0),
+    new THREE.MeshStandardMaterial({
+      color: cfg.color, emissive: cfg.color, emissiveIntensity: 0.9,
+      metalness:0.3, roughness:0.15, transparent:true, opacity:0.92
+    })
+  );
+  crystal.position.y = 4.1;
+  crystal.castShadow = true;
+  group.add(crystal);
+
+  // Halo de luz
+  const light = new THREE.PointLight(cfg.color, 1.6, 12);
+  light.position.y = 4.1;
+  group.add(light);
+
+  // Partículas mágicas orbitando
+  const pCount = 46;
+  const positions = new Float32Array(pCount*3);
+  const info = [];
+  for(let i=0;i<pCount;i++){
+    const r = 1.2 + Math.random()*1.4;
+    const a = Math.random()*Math.PI*2;
+    const h = Math.random()*3.4;
+    positions[i*3] = Math.cos(a)*r;
+    positions[i*3+1] = h;
+    positions[i*3+2] = Math.sin(a)*r;
+    info.push({r, a, speed:0.3+Math.random()*0.6, h, bob:Math.random()*Math.PI*2});
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  const pMat = new THREE.PointsMaterial({color:cfg.color, size:0.16, transparent:true, opacity:0.85, fog:false});
+  const points = new THREE.Points(pGeo, pMat);
+  points.position.y = 2.2;
+  group.add(points);
+  particleSystems.push({points, info});
+
+  scene.add(group);
+  totemGroups[cfg.key] = {group, crystal, light, base:pos};
+  totemMeshes.push(crystal);
+  crystal.userData.key = cfg.key;
+  platform.userData.key = cfg.key;
+  totemMeshes.push(platform);
+
+  return group;
+}
+TOTEM_LAYOUT.forEach(cfg=>buildTotem({...cfg, color: CONTENT[cfg.key].color}));
+
+/* ------------- Personagem ------------- */
+const player = new THREE.Group();
+player.position.copy(state.playerPos);
+scene.add(player);
+
+const bodyMat = new THREE.MeshStandardMaterial({color:0x2a3a7a, roughness:0.5, metalness:0.25});
+const trimMat = new THREE.MeshStandardMaterial({color:0xd4af37, roughness:0.35, metalness:0.6, emissive:0x5a4310, emissiveIntensity:0.4});
+
+const torso = new THREE.Mesh(new THREE.ConeGeometry(0.55,1.3,10), bodyMat);
+torso.position.y = 1.1; torso.castShadow = true;
+player.add(torso);
+
+const head = new THREE.Mesh(new THREE.SphereGeometry(0.32,16,16), new THREE.MeshStandardMaterial({color:0xe8c9a0, roughness:0.6}));
+head.position.y = 1.95; head.castShadow = true;
+player.add(head);
+
+const shoulder = new THREE.Mesh(new THREE.TorusGeometry(0.52,0.08,8,16), trimMat);
+shoulder.position.y = 1.55; shoulder.rotation.x = Math.PI/2;
+player.add(shoulder);
+
+const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.1,0.7,8), bodyMat);
+legL.position.set(-0.22,0.35,0); legL.castShadow = true; player.add(legL);
+const legR = legL.clone(); legR.position.x = 0.22; player.add(legR);
+
+const glowRing = new THREE.Mesh(new THREE.RingGeometry(0.5,0.62,24), new THREE.MeshBasicMaterial({color:0xd4af37, transparent:true, opacity:0.5, side:THREE.DoubleSide}));
+glowRing.rotation.x = -Math.PI/2; glowRing.position.y = 0.02;
+player.add(glowRing);
+
+const playerLight = new THREE.PointLight(0xffe9c2, 0.6, 5);
+playerLight.position.y = 1.4;
+player.add(playerLight);
+
+/* ============================================================
+   CONTROLES
+   ============================================================ */
+window.addEventListener('keydown', e=>{
+  state.keys[e.key.toLowerCase()] = true;
+  if(e.key.toLowerCase()==='e') tryInteract();
+  if(e.key === 'Escape') closeModal();
+});
+window.addEventListener('keyup', e=>{ state.keys[e.key.toLowerCase()] = false; });
+
+renderer.domElement.addEventListener('mousedown', e=>{ state.dragging = true; state.lastX = e.clientX; });
+window.addEventListener('mouseup', ()=> state.dragging = false);
+window.addEventListener('mousemove', e=>{
+  if(state.dragging){
+    const dx = e.clientX - state.lastX;
+    state.cameraYaw -= dx*0.0045;
+    state.lastX = e.clientX;
+  }
+});
+
+// Toque (mobile): arrasto para orbitar câmera na área central
+let touchLastX = null;
+renderer.domElement.addEventListener('touchstart', e=>{
+  if(e.touches.length===1){ touchLastX = e.touches[0].clientX; }
+}, {passive:true});
+renderer.domElement.addEventListener('touchmove', e=>{
+  if(touchLastX!==null && e.touches.length===1){
+    const dx = e.touches[0].clientX - touchLastX;
+    state.cameraYaw -= dx*0.005;
+    touchLastX = e.touches[0].clientX;
+  }
+}, {passive:true});
+renderer.domElement.addEventListener('touchend', ()=>{ touchLastX = null; });
+
+// Clique / toque em totens abre modal direto
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+function handlePick(clientX, clientY){
+  pointer.x = (clientX/window.innerWidth)*2-1;
+  pointer.y = -(clientY/window.innerHeight)*2+1;
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(totemMeshes, false);
+  if(hits.length){
+    const key = hits[0].object.userData.key;
+    if(key) openModal(key);
+  }
+}
+renderer.domElement.addEventListener('click', e=> handlePick(e.clientX, e.clientY));
+
+// D-pad mobile
+const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints>0;
+if(isTouch){
+  document.getElementById('dpad').classList.add('visible');
+  document.getElementById('interact-btn').classList.add('visible');
+}
+function bindHold(id, key){
+  const el = document.getElementById(id);
+  const on = ev=>{ ev.preventDefault(); state.keys[key]=true; };
+  const off = ev=>{ ev.preventDefault(); state.keys[key]=false; };
+  el.addEventListener('touchstart', on, {passive:false});
+  el.addEventListener('touchend', off, {passive:false});
+  el.addEventListener('touchcancel', off, {passive:false});
+}
+bindHold('btn-up','w'); bindHold('btn-down','s'); bindHold('btn-left','a'); bindHold('btn-right','d');
+document.getElementById('interact-btn').addEventListener('touchstart', ev=>{ev.preventDefault(); tryInteract();}, {passive:false});
+
+/* ============================================================
+   HUD — bind
+   ============================================================ */
+document.querySelectorAll('.nav-chip, .seg').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    const key = el.dataset.key;
+    openModal(key);
+  });
+});
+
+const modalOverlay = document.getElementById('modal-overlay');
+const modalCard = document.getElementById('modal-card');
+document.getElementById('modal-close').addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', e=>{ if(e.target===modalOverlay) closeModal(); });
+
+function markVisited(key){
+  if(state.visited.has(key)) return;
+  state.visited.add(key);
+  document.querySelector(`.seg[data-key="${key}"]`).classList.add('visited');
+}
+
+function openModal(key){
+  const c = CONTENT[key];
+  if(!c) return;
+  document.getElementById('modal-eyebrow-text').textContent = c.eyebrow;
+  document.getElementById('modal-title').textContent = c.title;
+  document.getElementById('modal-body').innerHTML = c.render();
+  modalCard.style.setProperty('--accent', c.accent);
+  modalCard.style.setProperty('--accent-glow', c.glow);
+  modalOverlay.classList.add('open');
+  state.modalOpen = true;
+  markVisited(key);
+  chime(key);
+}
+function closeModal(){
+  modalOverlay.classList.remove('open');
+  state.modalOpen = false;
+}
+
+/* Som de feedback sintetizado (sem assets externos) */
+let audioCtx = null;
+function chime(key){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const freqs = {about:523.25, skills:659.25, projects:783.99, contact:987.77};
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.value = freqs[key]||600;
+    g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime+0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.9);
+    o.connect(g).connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime+0.9);
+  }catch(e){/* silencioso se áudio bloqueado */}
+}
+
+/* ============================================================
+   INTERAÇÃO POR PROXIMIDADE
+   ============================================================ */
+const INTERACT_RADIUS = 4.4;
+const promptEl = document.getElementById('interact-prompt');
+const promptTitle = document.getElementById('interact-title');
+
+function updateNearest(){
+  let best = null, bestDist = Infinity;
+  for(const key in totemGroups){
+    const d = player.position.distanceTo(totemGroups[key].base);
+    if(d < INTERACT_RADIUS && d < bestDist){ best = key; bestDist = d; }
+  }
+  if(best !== state.nearest){
+    state.nearest = best;
+    if(best){
+      promptTitle.textContent = CONTENT[best].label;
+      promptEl.classList.add('show');
+    } else {
+      promptEl.classList.remove('show');
+    }
+  }
+}
+function tryInteract(){
+  if(state.nearest && !state.modalOpen) openModal(state.nearest);
+}
+
+/* ============================================================
+   MINIMAPA
+   ============================================================ */
+const mmCanvas = document.getElementById('minimap');
+const mmCtx = mmCanvas.getContext('2d');
+function drawMinimap(){
+  const w = mmCanvas.width, h = mmCanvas.height, cx = w/2, cy = h/2;
+  const scale = (w/2 - 10) / 42;
+  mmCtx.clearRect(0,0,w,h);
+  mmCtx.save();
+  mmCtx.beginPath(); mmCtx.arc(cx,cy,w/2-2,0,Math.PI*2); mmCtx.clip();
+  mmCtx.fillStyle = 'rgba(20,28,60,0.9)'; mmCtx.fillRect(0,0,w,h);
+
+  // anel
+  mmCtx.strokeStyle = 'rgba(212,175,55,0.35)';
+  mmCtx.lineWidth = 2;
+  mmCtx.beginPath(); mmCtx.arc(cx,cy, RING_RADIUS*scale, 0, Math.PI*2); mmCtx.stroke();
+
+  // totens
+  for(const key in totemGroups){
+    const p = totemGroups[key].base;
+    const x = cx + p.x*scale, y = cy + p.z*scale;
+    mmCtx.fillStyle = '#'+CONTENT[key].color.toString(16).padStart(6,'0');
+    mmCtx.beginPath(); mmCtx.arc(x,y,4,0,Math.PI*2); mmCtx.fill();
+  }
+
+  // jogador
+  const px = cx + player.position.x*scale, py = cy + player.position.z*scale;
+  mmCtx.save();
+  mmCtx.translate(px,py);
+  mmCtx.rotate(state.facing);
+  mmCtx.fillStyle = '#f3d576';
+  mmCtx.beginPath();
+  mmCtx.moveTo(0,-7); mmCtx.lineTo(5,6); mmCtx.lineTo(-5,6); mmCtx.closePath();
+  mmCtx.fill();
+  mmCtx.restore();
+
+  mmCtx.restore();
+  mmCtx.strokeStyle = 'rgba(212,175,55,0.5)';
+  mmCtx.lineWidth = 2;
+  mmCtx.beginPath(); mmCtx.arc(cx,cy,w/2-2,0,Math.PI*2); mmCtx.stroke();
+}
+
+/* ============================================================
+   LOOP PRINCIPAL
+   ============================================================ */
+const BOUND = 66;
+const SPEED = 7.2;
+
+function updatePlayer(dt){
+  if(state.modalOpen) return;
+  const yaw = state.cameraYaw;
+  const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
+  const right = new THREE.Vector3(forward.z, 0, -forward.x);
+
+  let mx=0, mz=0;
+  if(state.keys['w']||state.keys['arrowup']) mz += 1;
+  if(state.keys['s']||state.keys['arrowdown']) mz -= 1;
+  if(state.keys['d']||state.keys['arrowright']) mx += 1;
+  if(state.keys['a']||state.keys['arrowleft']) mx -= 1;
+
+  const move = new THREE.Vector3();
+  move.addScaledVector(forward, mz);
+  move.addScaledVector(right, mx);
+
+  if(move.lengthSq() > 0){
+    move.normalize().multiplyScalar(SPEED*dt);
+    player.position.add(move);
+    const dist = Math.hypot(player.position.x, player.position.z);
+    if(dist > BOUND){
+      player.position.x *= BOUND/dist;
+      player.position.z *= BOUND/dist;
+    }
+    const targetFacing = Math.atan2(move.x, move.z);
+    let diff = targetFacing - state.facing;
+    diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+    state.facing += diff * Math.min(1, dt*10);
+    player.rotation.y = state.facing;
+
+    const t = performance.now()*0.012;
+    torso.position.y = 1.1 + Math.sin(t)*0.03;
+    legL.rotation.x = Math.sin(t*1.6)*0.5;
+    legR.rotation.x = -Math.sin(t*1.6)*0.5;
+  }
+}
+
+function updateCamera(){
+  const yaw = state.cameraYaw;
+  const dist = 8.5, height = 4.6;
+  const desired = new THREE.Vector3(
+    player.position.x + Math.sin(yaw)*dist,
+    player.position.y + height,
+    player.position.z + Math.cos(yaw)*dist
+  );
+  camera.position.lerp(desired, 0.14);
+  const lookTarget = player.position.clone(); lookTarget.y += 1.5;
+  camera.lookAt(lookTarget);
+}
+
+function updateTotems(dt){
+  const t = performance.now()*0.001;
+  for(const key in totemGroups){
+    const {crystal, light} = totemGroups[key];
+    crystal.rotation.y += dt*0.6;
+    crystal.position.y = 4.1 + Math.sin(t*1.3)*0.18;
+    light.intensity = 1.4 + Math.sin(t*2.1)*0.3;
+  }
+  particleSystems.forEach(sys=>{
+    const posAttr = sys.points.geometry.attributes.position;
+    sys.info.forEach((info, i)=>{
+      info.a += dt*info.speed*0.4;
+      const y = info.h + Math.sin(t*1.5+info.bob)*0.3;
+      posAttr.setXYZ(i, Math.cos(info.a)*info.r, y, Math.sin(info.a)*info.r);
+    });
+    posAttr.needsUpdate = true;
+    sys.points.rotation.y += dt*0.05;
+  });
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  const dt = Math.min(state.clock.getDelta(), 0.05);
+  if(state.started){
+    updatePlayer(dt);
+    updateCamera();
+    updateNearest();
+  }
+  updateTotems(dt);
+  drawMinimap();
+  renderer.render(scene, camera);
+}
+animate();
+
+/* ============================================================
+   INÍCIO / RESIZE
+   ============================================================ */
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+document.getElementById('start-btn').addEventListener('click', ()=>{
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('hud').classList.add('visible');
+  state.started = true;
+  updateCamera();
+  setTimeout(()=>{ document.getElementById('hint-box').style.opacity = '0'; }, 9000);
+  try{ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+});
+
+})();
+</script>
 </body>
 </html>

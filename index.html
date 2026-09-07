@@ -367,11 +367,20 @@
 
   /* ---------- Criaturas: leve pulso no marcador ---------- */
   @keyframes floatPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+
+  /* ---------- Transição de Portal ---------- */
+  #portal-fade{
+    position:fixed; inset:0; z-index:95; background:#04060f;
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .48s ease, visibility .48s ease;
+  }
+  #portal-fade.show{opacity:1; visibility:visible;}
 </style>
 </head>
 <body>
 
 <div id="canvas-root"></div>
+<div id="portal-fade"></div>
 
 <!-- INTRO -->
 <div id="intro">
@@ -563,6 +572,33 @@ const CONTENT = {
         <div><div class="lbl">E-MAIL</div><a href="mailto:djhessicabratidelima@gmail.com">djhessicabratidelima@gmail.com</a></div>
       </div>
     `
+  },
+  embarcada:{
+    label:"Tecnologia Embarcada & IoT", color:0x35e0c9, accent:"#35e0c9", glow:"rgba(53,224,201,0.35)",
+    eyebrow:"NOVO DISTRITO",
+    title:"Tecnologia Embarcada & IoT",
+    render:()=>`
+      <p>Este distrito reúne o que venho aprendendo em <strong style="color:#fff">tecnologia embarcada e IoT</strong> — sensores, microcontroladores e a ponte entre hardware e software.</p>
+      <p>Os dois projetos ao redor, <strong style="color:#fff">OrderBay</strong> e <strong style="color:#fff">NivelaAí</strong>, nasceram dessa jornada, com orientação dos professores <strong style="color:#fff">Horizonte</strong> (Programação) e <strong style="color:#fff">Leonardo</strong> (Engenharia Mecânica).</p>
+    `
+  },
+  orderbay:{
+    label:"OrderBay", color:0xffa63a, accent:"#ffa63a", glow:"rgba(255,166,58,0.35)",
+    eyebrow:"PROJETO FÍSICO · TECNOLOGIA EMBARCADA",
+    title:"OrderBay",
+    render:()=>`
+      <p>OrderBay é um <strong style="color:#fff">jogo físico</strong> (não digital), criado durante as aulas de tecnologia embarcada.</p>
+      <p>Desenvolvido em parceria com os colegas <strong style="color:#fff">Alison</strong> e <strong style="color:#fff">Julia</strong>, unindo eletrônica, lógica e trabalho em equipe para dar vida a um jogo que existe fora da tela.</p>
+    `
+  },
+  nivelaai:{
+    label:"NivelaAí", color:0x3aa0ff, accent:"#3aa0ff", glow:"rgba(58,160,255,0.35)",
+    eyebrow:"PROJETO DE IMPACTO SOCIAL",
+    title:"NivelaAí",
+    render:()=>`
+      <p>O NivelaAí é um projeto pensado para <strong style="color:#fff">medir o nível dos rios</strong> e enviar um alerta de risco para a Defesa Civil, ajudando a antecipar situações de enchente.</p>
+      <p>Desenvolvido em parceria com os colegas <strong style="color:#fff">Israel</strong> e <strong style="color:#fff">Mattey</strong>.</p>
+    `
   }
 };
 
@@ -643,6 +679,12 @@ const TOTEM_LAYOUT = [
 ];
 const RING_RADIUS = 24;
 
+/* Zonas do mundo (mapa principal + distrito revelado pelo portal) */
+const ZONES = {
+  main: { center:new THREE.Vector3(0,0,0), radius:66, mapRadius:42, spawn:new THREE.Vector3(0,0,10) },
+  city: { center:new THREE.Vector3(0,0,-170), radius:34, mapRadius:24, spawn:new THREE.Vector3(0,0,-170+12) }
+};
+
 /* ============================================================
    ESTADO GLOBAL
    ============================================================ */
@@ -651,6 +693,7 @@ const state = {
   visited:new Set(), modalOpen:false, nearest:null,
   playerPos:new THREE.Vector3(0,0,10), playerVel:new THREE.Vector3(),
   facing:0, clock:new THREE.Clock(), started:false,
+  zone:'main', teleportCooldownUntil:0,
 };
 
 /* ============================================================
@@ -886,7 +929,7 @@ function buildTotem(cfg){
   particleSystems.push({points, info});
 
   scene.add(group);
-  totemGroups[cfg.key] = {group, crystal, light, base:pos};
+  totemGroups[cfg.key] = {group, crystal, light, base:pos, zone:'main', baseY:4.1};
   totemMeshes.push(crystal);
   crystal.userData.key = cfg.key;
   platform.userData.key = cfg.key;
@@ -979,7 +1022,7 @@ function buildNPC(cfg){
 
   scene.add(group);
   pickMeshes.forEach(m=>{ m.userData.npc = cfg.key; npcMeshes.push(m); });
-  npcGroups[cfg.key] = {group, base:pos, marker, cfg, idle: Math.random()*Math.PI*2, talked:false};
+  npcGroups[cfg.key] = {group, base:pos, marker, cfg, idle: Math.random()*Math.PI*2, talked:false, zone:'main'};
 }
 NPC_DATA.forEach(buildNPC);
 CREATURE_DATA.forEach(buildNPC);
@@ -1014,9 +1057,198 @@ function buildArtifact(cfg){
   group.add(baseGlow);
 
   scene.add(group);
-  artifactGroups[cfg.key] = {group, gem, ring, base:pos, cfg, collected:false};
+  artifactGroups[cfg.key] = {group, gem, ring, base:pos, cfg, collected:false, zone:'main'};
 }
 ARTIFACT_DATA.forEach(buildArtifact);
+
+/* ============================================================
+   DISTRITO SECRETO — revelado ao reunir todos os artefatos
+   ============================================================ */
+const CZ = ZONES.city.center;
+const portalMarkers = [];
+
+/* Praça quadriculada estilo blocos */
+(function buildCityGround(){
+  const base = new THREE.Mesh(
+    new THREE.PlaneGeometry(78,78),
+    new THREE.MeshStandardMaterial({color:0x1b2130, roughness:0.95})
+  );
+  base.rotation.x = -Math.PI/2;
+  base.position.copy(CZ);
+  base.receiveShadow = true;
+  scene.add(base);
+
+  const grid = new THREE.GridHelper(78, 20, 0x35e0c9, 0x24406a);
+  grid.position.set(CZ.x, 0.03, CZ.z);
+  grid.material.transparent = true;
+  grid.material.opacity = 0.55;
+  scene.add(grid);
+
+  // blocos decorativos nas bordas da praça (estilo "cidade quadrada")
+  for(let i=0;i<16;i++){
+    const a = (i/16)*Math.PI*2;
+    const r = 33 + (i%2)*2;
+    const h = 1.2 + (i%3)*0.8;
+    const block = new THREE.Mesh(
+      new THREE.BoxGeometry(2.4,h,2.4),
+      new THREE.MeshStandardMaterial({color: i%2===0 ? 0x24304a : 0x2c3a56, roughness:0.8, flatShading:true})
+    );
+    block.position.set(CZ.x+Math.cos(a)*r, h/2, CZ.z+Math.sin(a)*r);
+    block.castShadow = true; block.receiveShadow = true;
+    scene.add(block);
+    if(i%2===0){
+      const beacon = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.3), new THREE.MeshStandardMaterial({color:0x35e0c9, emissive:0x35e0c9, emissiveIntensity:1.4}));
+      beacon.position.set(block.position.x, h+0.3, block.position.z);
+      scene.add(beacon);
+      const bl = new THREE.PointLight(0x35e0c9, 0.7, 6);
+      bl.position.copy(beacon.position);
+      scene.add(bl);
+    }
+  }
+
+  scene.add(new THREE.PointLight(0x6a8fff, 0.5, 60).translateX(CZ.x).translateZ(CZ.z).translateY(20));
+})();
+
+/* Prédio blocado estilo "quarteirão" com beacon interativo no topo */
+function buildCityBuilding(cfg){
+  const pos = CZ.clone().add(cfg.offset);
+  const group = new THREE.Group();
+  group.position.copy(pos);
+
+  let h = 0;
+  const floors = cfg.floors || 3;
+  for(let i=0;i<floors;i++){
+    const w = 3.2 - i*0.5;
+    const fh = 1.6;
+    const box = new THREE.Mesh(
+      new THREE.BoxGeometry(w, fh, w),
+      new THREE.MeshStandardMaterial({color:cfg.color, roughness:0.6, metalness:0.15, flatShading:true})
+    );
+    box.position.y = h + fh/2;
+    box.castShadow = true; box.receiveShadow = true;
+    group.add(box);
+    // janelinhas emissivas
+    for(let s=0;s<2;s++){
+      const win = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.35,0.05), new THREE.MeshStandardMaterial({color:0xfff2c2, emissive:0xfff2c2, emissiveIntensity:1.2}));
+      win.position.set((s===0?-1:1)*w*0.28, h+fh*0.55, w/2+0.03);
+      group.add(win);
+    }
+    h += fh;
+  }
+
+  scene.add(group);
+
+  // Beacon (cristal interativo) no topo do prédio
+  const crystal = new THREE.Mesh(
+    new THREE.OctahedronGeometry(0.85,0),
+    new THREE.MeshStandardMaterial({color:cfg.color, emissive:cfg.color, emissiveIntensity:1.0, metalness:0.3, roughness:0.15, transparent:true, opacity:0.92})
+  );
+  crystal.position.set(pos.x, h+1.3, pos.z);
+  crystal.castShadow = true;
+  crystal.userData.key = cfg.key;
+  scene.add(crystal);
+  totemMeshes.push(crystal);
+
+  const light = new THREE.PointLight(cfg.color, 1.5, 12);
+  light.position.copy(crystal.position);
+  scene.add(light);
+
+  totemGroups[cfg.key] = {group:crystal, crystal, light, base:pos.clone(), zone:'city', baseY:h+1.3};
+}
+
+/* Placa/totem do distrito (introdução) */
+function buildDistrictPlaque(cfg){
+  const pos = CZ.clone().add(cfg.offset);
+  const stand = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.5,0.6,1.6,10),
+    new THREE.MeshStandardMaterial({color:0x2a2f42, roughness:0.7})
+  );
+  stand.position.set(pos.x, 0.8, pos.z);
+  stand.castShadow = true; stand.receiveShadow = true;
+  scene.add(stand);
+
+  const crystal = new THREE.Mesh(
+    new THREE.OctahedronGeometry(0.7,0),
+    new THREE.MeshStandardMaterial({color:cfg.color, emissive:cfg.color, emissiveIntensity:1.0, metalness:0.3, roughness:0.15, transparent:true, opacity:0.92})
+  );
+  crystal.position.set(pos.x, 2.2, pos.z);
+  crystal.userData.key = cfg.key;
+  scene.add(crystal);
+  totemMeshes.push(crystal);
+
+  const light = new THREE.PointLight(cfg.color, 1.4, 10);
+  light.position.copy(crystal.position);
+  scene.add(light);
+
+  totemGroups[cfg.key] = {group:crystal, crystal, light, base:pos.clone(), zone:'city', baseY:2.2};
+}
+
+buildDistrictPlaque({key:"embarcada", color:CONTENT.embarcada.color, offset:new THREE.Vector3(0,0,-2)});
+buildCityBuilding({key:"orderbay", color:CONTENT.orderbay.color, offset:new THREE.Vector3(-15,0,-14), floors:3});
+buildCityBuilding({key:"nivelaai", color:CONTENT.nivelaai.color, offset:new THREE.Vector3(15,0,-14), floors:4});
+
+/* ------------- Portais ------------- */
+function buildPortal(cfg){
+  const group = new THREE.Group();
+  group.position.copy(cfg.pos);
+
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(2.1,0.22,16,48),
+    new THREE.MeshStandardMaterial({color:cfg.color, emissive:cfg.color, emissiveIntensity:1.1, metalness:0.5, roughness:0.25})
+  );
+  ring.rotation.x = Math.PI/2;
+  ring.position.y = 2.1;
+  group.add(ring);
+
+  const disc = new THREE.Mesh(
+    new THREE.CircleGeometry(1.85,32),
+    new THREE.MeshBasicMaterial({color:cfg.color, transparent:true, opacity:0.35, side:THREE.DoubleSide})
+  );
+  disc.rotation.x = Math.PI/2;
+  disc.position.y = 2.1;
+  group.add(disc);
+
+  const light = new THREE.PointLight(cfg.color, 2.0, 14);
+  light.position.y = 2.1;
+  group.add(light);
+
+  const pCount = 70;
+  const positions = new Float32Array(pCount*3);
+  const info = [];
+  for(let i=0;i<pCount;i++){
+    const r = 0.3+Math.random()*1.7;
+    const a = Math.random()*Math.PI*2;
+    positions[i*3] = Math.cos(a)*r;
+    positions[i*3+1] = 2.1 + Math.sin(a)*r;
+    positions[i*3+2] = 0;
+    info.push({r,a,speed:0.6+Math.random()*0.8});
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  const pMat = new THREE.PointsMaterial({color:0xffffff, size:0.09, transparent:true, opacity:0.9, fog:false});
+  const points = new THREE.Points(pGeo, pMat);
+  group.add(points);
+
+  group.visible = !!cfg.startVisible;
+  group.scale.setScalar(cfg.startVisible ? 1 : 0.001);
+  scene.add(group);
+
+  const marker = {
+    key:cfg.key, pos:cfg.pos.clone(), zone:cfg.zone, target:cfg.target,
+    group, ring, disc, points, info, active: !!cfg.startVisible, color:cfg.color
+  };
+  portalMarkers.push(marker);
+  return marker;
+}
+
+const outboundPortal = buildPortal({
+  key:'portal_out', pos: new THREE.Vector3(0,0,-11), color:0x9a5cff,
+  zone:'main', target:'city', startVisible:false
+});
+const returnPortal = buildPortal({
+  key:'portal_back', pos: CZ.clone().add(new THREE.Vector3(0,0,12)), color:0x35e0c9,
+  zone:'city', target:'main', startVisible:true
+});
 
 /* ------------- Personagem ------------- */
 const player = new THREE.Group();
@@ -1139,7 +1371,8 @@ modalOverlay.addEventListener('click', e=>{ if(e.target===modalOverlay) closeMod
 function markVisited(key){
   if(state.visited.has(key)) return;
   state.visited.add(key);
-  document.querySelector(`.seg[data-key="${key}"]`).classList.add('visited');
+  const seg = document.querySelector(`.seg[data-key="${key}"]`);
+  if(seg) seg.classList.add('visited');
 }
 
 function openModal(key){
@@ -1277,8 +1510,9 @@ function collectArtifact(key){
 
 function checkAchievement(){
   if(state.collectedArtifacts.size === TOTAL_ARTIFACTS){
-    showToast('Conquista Desbloqueada!', 'Todos os artefatos místicos foram reunidos.', '#f3d576', true);
+    showToast('Conquista Desbloqueada!', 'Um portal se abriu perto do hub central — atravesse-o!', '#f3d576', true);
     hubBurst();
+    activateOutboundPortal();
   }
 }
 
@@ -1391,21 +1625,31 @@ const mmCanvas = document.getElementById('minimap');
 const mmCtx = mmCanvas.getContext('2d');
 function drawMinimap(){
   const w = mmCanvas.width, h = mmCanvas.height, cx = w/2, cy = h/2;
-  const scale = (w/2 - 10) / 42;
+  const zone = ZONES[state.zone];
+  const zc = zone.center;
+  const scale = (w/2 - 10) / zone.mapRadius;
   mmCtx.clearRect(0,0,w,h);
   mmCtx.save();
   mmCtx.beginPath(); mmCtx.arc(cx,cy,w/2-2,0,Math.PI*2); mmCtx.clip();
   mmCtx.fillStyle = 'rgba(20,28,60,0.9)'; mmCtx.fillRect(0,0,w,h);
 
-  // anel
-  mmCtx.strokeStyle = 'rgba(212,175,55,0.35)';
-  mmCtx.lineWidth = 2;
-  mmCtx.beginPath(); mmCtx.arc(cx,cy, RING_RADIUS*scale, 0, Math.PI*2); mmCtx.stroke();
+  if(state.zone === 'main'){
+    // anel
+    mmCtx.strokeStyle = 'rgba(212,175,55,0.35)';
+    mmCtx.lineWidth = 2;
+    mmCtx.beginPath(); mmCtx.arc(cx,cy, RING_RADIUS*scale, 0, Math.PI*2); mmCtx.stroke();
+  } else {
+    // grade quadriculada do distrito
+    mmCtx.strokeStyle = 'rgba(53,224,201,0.3)';
+    mmCtx.lineWidth = 1;
+    mmCtx.strokeRect(cx-30*scale, cy-30*scale, 60*scale, 60*scale);
+  }
 
-  // totens
+  // totens / beacons (filtrando pela zona atual)
   for(const key in totemGroups){
-    const p = totemGroups[key].base;
-    const x = cx + p.x*scale, y = cy + p.z*scale;
+    const tg = totemGroups[key];
+    if(tg.zone !== state.zone) continue;
+    const x = cx + (tg.base.x-zc.x)*scale, y = cy + (tg.base.z-zc.z)*scale;
     mmCtx.fillStyle = '#'+CONTENT[key].color.toString(16).padStart(6,'0');
     mmCtx.beginPath(); mmCtx.arc(x,y,4,0,Math.PI*2); mmCtx.fill();
   }
@@ -1413,8 +1657,8 @@ function drawMinimap(){
   // Artefatos
   for(const key in artifactGroups){
     const a = artifactGroups[key];
-    if(a.collected) continue;
-    const x = cx + a.base.x*scale, y = cy + a.base.z*scale;
+    if(a.collected || a.zone !== state.zone) continue;
+    const x = cx + (a.base.x-zc.x)*scale, y = cy + (a.base.z-zc.z)*scale;
     mmCtx.fillStyle = '#'+a.cfg.color.toString(16).padStart(6,'0');
     mmCtx.save();
     mmCtx.translate(x,y); mmCtx.rotate(Math.PI/4);
@@ -1422,10 +1666,11 @@ function drawMinimap(){
     mmCtx.restore();
   }
 
-  // NPCs
+  // NPCs / criaturas
   for(const key in npcGroups){
-    const p = npcGroups[key].base;
-    const x = cx + p.x*scale, y = cy + p.z*scale;
+    const npc = npcGroups[key];
+    if(npc.zone !== state.zone) continue;
+    const x = cx + (npc.base.x-zc.x)*scale, y = cy + (npc.base.z-zc.z)*scale;
     mmCtx.fillStyle = '#f3d576';
     mmCtx.save();
     mmCtx.translate(x,y); mmCtx.rotate(Math.PI/4);
@@ -1433,8 +1678,17 @@ function drawMinimap(){
     mmCtx.restore();
   }
 
+  // Portais
+  portalMarkers.forEach(p=>{
+    if(!p.active || p.zone !== state.zone) return;
+    const x = cx + (p.pos.x-zc.x)*scale, y = cy + (p.pos.z-zc.z)*scale;
+    mmCtx.fillStyle = '#'+p.color.toString(16).padStart(6,'0');
+    mmCtx.beginPath(); mmCtx.arc(x,y,5,0,Math.PI*2); mmCtx.fill();
+    mmCtx.strokeStyle = '#fff'; mmCtx.lineWidth = 1; mmCtx.stroke();
+  });
+
   // jogador
-  const px = cx + player.position.x*scale, py = cy + player.position.z*scale;
+  const px = cx + (player.position.x-zc.x)*scale, py = cy + (player.position.z-zc.z)*scale;
   mmCtx.save();
   mmCtx.translate(px,py);
   mmCtx.rotate(state.facing);
@@ -1453,7 +1707,6 @@ function drawMinimap(){
 /* ============================================================
    LOOP PRINCIPAL
    ============================================================ */
-const BOUND = 66;
 const SPEED = 7.2;
 
 function updatePlayer(dt){
@@ -1475,11 +1728,16 @@ function updatePlayer(dt){
   if(move.lengthSq() > 0){
     move.normalize().multiplyScalar(SPEED*dt);
     player.position.add(move);
-    const dist = Math.hypot(player.position.x, player.position.z);
-    if(dist > BOUND){
-      player.position.x *= BOUND/dist;
-      player.position.z *= BOUND/dist;
+
+    const zone = ZONES[state.zone];
+    const delta = new THREE.Vector3(player.position.x-zone.center.x, 0, player.position.z-zone.center.z);
+    const dist = delta.length();
+    if(dist > zone.radius){
+      delta.setLength(zone.radius);
+      player.position.x = zone.center.x + delta.x;
+      player.position.z = zone.center.z + delta.z;
     }
+
     const targetFacing = Math.atan2(move.x, move.z);
     let diff = targetFacing - state.facing;
     diff = Math.atan2(Math.sin(diff), Math.cos(diff));
@@ -1509,9 +1767,9 @@ function updateCamera(){
 function updateTotems(dt){
   const t = performance.now()*0.001;
   for(const key in totemGroups){
-    const {crystal, light} = totemGroups[key];
+    const {crystal, light, baseY} = totemGroups[key];
     crystal.rotation.y += dt*0.6;
-    crystal.position.y = 4.1 + Math.sin(t*1.3)*0.18;
+    crystal.position.y = (baseY!==undefined?baseY:4.1) + Math.sin(t*1.3)*0.18;
     light.intensity = 1.4 + Math.sin(t*2.1)*0.3;
   }
   particleSystems.forEach(sys=>{
@@ -1537,6 +1795,57 @@ function updateNPCs(dt){
   }
 }
 
+/* ---- Transição de tela / teleporte ---- */
+const fadeEl = document.getElementById('portal-fade');
+function fadeOverlay(show){ fadeEl.classList.toggle('show', show); }
+
+function teleportTo(zoneName){
+  state.teleportCooldownUntil = performance.now() + 100000; // trava movimento/coleta durante a transição
+  fadeOverlay(true);
+  setTimeout(()=>{
+    const zone = ZONES[zoneName];
+    state.zone = zoneName;
+    player.position.copy(zone.spawn);
+    fadeOverlay(false);
+    state.teleportCooldownUntil = performance.now() + 1600;
+    if(zoneName === 'city'){
+      showToast('Portal Atravessado', 'Bem-vinda ao Distrito de Tecnologia Embarcada & IoT.', '#35e0c9', false);
+    } else {
+      showToast('De Volta ao Mapa Principal', 'Explore o restante do portfólio por aqui.', '#d4af37', false);
+    }
+  }, 480);
+}
+
+function updatePortals(dt){
+  const t = performance.now()*0.001;
+  portalMarkers.forEach(p=>{
+    if(!p.active) return;
+    p.ring.rotation.z += dt*0.7;
+    p.group.scale.lerp(new THREE.Vector3(1,1,1), 0.08);
+    const posAttr = p.points.geometry.attributes.position;
+    p.info.forEach((info,i)=>{
+      info.a += dt*info.speed;
+      posAttr.setXYZ(i, Math.cos(info.a)*info.r, 2.1+Math.sin(info.a)*info.r, Math.sin(t*2+i)*0.15);
+    });
+    posAttr.needsUpdate = true;
+  });
+
+  if(!state.started || state.modalOpen || state.dialogueOpen) return;
+  if(performance.now() < state.teleportCooldownUntil) return;
+
+  portalMarkers.forEach(p=>{
+    if(!p.active || p.zone !== state.zone) return;
+    const d = Math.hypot(player.position.x-p.pos.x, player.position.z-p.pos.z);
+    if(d < 2.6) teleportTo(p.target);
+  });
+}
+
+function activateOutboundPortal(){
+  outboundPortal.active = true;
+  outboundPortal.group.visible = true;
+  outboundPortal.group.scale.setScalar(0.001);
+}
+
 function animate(){
   requestAnimationFrame(animate);
   const dt = Math.min(state.clock.getDelta(), 0.05);
@@ -1548,6 +1857,7 @@ function animate(){
   updateTotems(dt);
   updateNPCs(dt);
   updateArtifacts(dt);
+  updatePortals(dt);
   drawMinimap();
   renderer.render(scene, camera);
 }

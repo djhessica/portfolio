@@ -271,6 +271,102 @@
     #quicknav{display:none;}
     #hint-box{display:none;}
   }
+
+  /* ---------- Diálogo de NPC ---------- */
+  #npc-dialogue{
+    position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(30px);
+    width:min(560px, calc(100% - 40px)); z-index:55;
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease, visibility .3s ease;
+  }
+  #npc-dialogue.open{
+    opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); pointer-events:auto;
+  }
+  #npc-box{
+    display:flex; gap:16px;
+    background:linear-gradient(180deg, rgba(26,20,44,0.96), rgba(14,10,28,0.97));
+    border:1px solid var(--npc-accent, var(--purple));
+    box-shadow:0 0 40px var(--npc-glow, rgba(138,92,246,0.3)), 0 16px 40px rgba(0,0,0,0.6);
+    border-radius:10px; padding:18px 20px;
+  }
+  #npc-portrait{
+    width:52px; height:52px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:20px; color:#0e0c18;
+    background:linear-gradient(160deg, #fff, var(--npc-accent, var(--purple)));
+    border:2px solid var(--npc-accent, var(--purple));
+  }
+  #npc-text-wrap{flex:1; min-width:0;}
+  #npc-name-row{display:flex; align-items:baseline; gap:8px; margin-bottom:6px;}
+  #npc-name{font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--npc-accent-bright, var(--gold-bright));}
+  #npc-role{font-size:11px; color:var(--text-dim); letter-spacing:.05em;}
+  #npc-text{font-size:15px; line-height:1.55; color:var(--text); min-height:44px;}
+  #npc-footer{display:flex; align-items:center; justify-content:space-between; margin-top:10px;}
+  #npc-dots{display:flex; gap:5px;}
+  #npc-dots span{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.2);}
+  #npc-dots span.active{background:var(--npc-accent, var(--purple));}
+  #npc-advance{font-size:12px; color:var(--text-dim);}
+  #npc-advance kbd{
+    display:inline-block; padding:1px 7px; border:1px solid var(--npc-accent, var(--purple)); border-radius:4px;
+    color:var(--npc-accent-bright, var(--gold-bright)); font-family:var(--font-display); font-size:12px; margin:0 2px;
+  }
+  #npc-link{
+    display:inline-flex; align-items:center; gap:6px; margin-top:10px; font-size:12px; font-weight:600;
+    padding:7px 14px; border-radius:6px; text-decoration:none; color:#0e0c18;
+    background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+  }
+  #npc-link svg{width:13px; height:13px;}
+  #npc-link.hidden{display:none;}
+
+  @media (max-width:640px){
+    #npc-box{flex-direction:column; align-items:flex-start;}
+    #npc-portrait{width:40px; height:40px; font-size:16px;}
+  }
+
+  /* ---------- Inventário de Artefatos ---------- */
+  #inventory{
+    position:absolute; top:18px; right:18px; pointer-events:auto;
+    display:flex; align-items:center; gap:8px;
+    background:var(--panel); border:1px solid var(--border); border-radius:20px;
+    padding:8px 16px 8px 10px; backdrop-filter:blur(6px);
+  }
+  #inventory .orb-icon{
+    width:22px; height:22px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff6d8, var(--gold-bright) 45%, var(--gold) 80%);
+    box-shadow:0 0 10px rgba(212,175,55,0.6);
+    flex-shrink:0;
+  }
+  #inventory-count{font-family:var(--font-display); font-size:14px; color:var(--gold-bright); font-weight:600;}
+  #inventory-label{font-size:10px; color:var(--text-dim); letter-spacing:.1em; margin-left:2px;}
+
+  /* ---------- Toast / Conquista ---------- */
+  #toast{
+    position:fixed; top:96px; left:50%; transform:translateX(-50%) translateY(-14px);
+    z-index:70; display:flex; align-items:center; gap:12px;
+    background:linear-gradient(180deg, rgba(28,22,48,0.96), rgba(14,10,28,0.97));
+    border:1px solid var(--toast-accent, var(--gold)); border-radius:10px;
+    padding:12px 20px; box-shadow:0 0 30px var(--toast-glow, rgba(212,175,55,0.35));
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s ease, transform .35s ease, visibility .35s ease;
+    max-width:min(420px, calc(100% - 40px));
+  }
+  #toast.show{opacity:1; visibility:visible; transform:translateX(-50%) translateY(0);}
+  #toast.achievement{
+    top:40%; padding:20px 30px; text-align:center; flex-direction:column; gap:4px;
+    max-width:min(480px, calc(100% - 40px));
+  }
+  #toast-icon{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0;
+    background:radial-gradient(circle at 35% 30%, #fff, var(--toast-accent, var(--gold)) 70%);
+    box-shadow:0 0 14px var(--toast-glow, rgba(212,175,55,0.5));
+  }
+  #toast.achievement #toast-icon{width:44px; height:44px; margin:0 auto 6px;}
+  #toast-title{font-family:var(--font-display); font-size:14px; color:var(--gold-bright); font-weight:700;}
+  #toast.achievement #toast-title{font-size:19px;}
+  #toast-sub{font-size:12px; color:var(--text-dim); margin-top:2px;}
+
+  /* ---------- Criaturas: leve pulso no marcador ---------- */
+  @keyframes floatPulse{0%,100%{opacity:.6;}50%{opacity:1;}}
 </style>
 </head>
 <body>
@@ -316,7 +412,7 @@
   </div>
 
   <div id="hint-box">
-    <b>WASD</b> para mover · <b>Mouse</b> para orbitar a câmera · <b>E</b> para interagir com os cristais · clique nos nomes acima para ir direto a uma seção.
+    <b>WASD</b> para mover · <b>Mouse</b> para orbitar a câmera · <b>E</b> para interagir com cristais, espíritos e criaturas · caminhe sobre os artefatos brilhantes para coletá-los.
   </div>
 
   <div id="interact-prompt">
@@ -326,6 +422,12 @@
 
   <div id="minimap-wrap"><canvas id="minimap" width="150" height="150"></canvas></div>
 
+  <div id="inventory">
+    <div class="orb-icon"></div>
+    <span id="inventory-count">0/6</span>
+    <span id="inventory-label">ARTEFATOS</span>
+  </div>
+
   <div id="dpad">
     <div class="dbtn" id="btn-up">▲</div>
     <div class="dbtn" id="btn-left">◀</div>
@@ -333,6 +435,31 @@
     <div class="dbtn" id="btn-right">▶</div>
   </div>
   <div id="interact-btn">E</div>
+</div>
+
+<!-- TOAST -->
+<div id="toast">
+  <div id="toast-icon"></div>
+  <div id="toast-text-wrap">
+    <div id="toast-title"></div>
+    <div id="toast-sub"></div>
+  </div>
+</div>
+
+<!-- DIÁLOGO DE NPC -->
+<div id="npc-dialogue">
+  <div id="npc-box">
+    <div id="npc-portrait">?</div>
+    <div id="npc-text-wrap">
+      <div id="npc-name-row"><span id="npc-name"></span><span id="npc-role"></span></div>
+      <div id="npc-text"></div>
+      <a id="npc-link" class="hidden" target="_blank" rel="noopener"></a>
+      <div id="npc-footer">
+        <div id="npc-dots"></div>
+        <div id="npc-advance">clique ou <kbd>E</kbd> para continuar</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL -->
@@ -438,6 +565,75 @@ const CONTENT = {
     `
   }
 };
+
+const NPC_DATA = [
+  {
+    key:"npc_guardavidas", name:"Sentinela do Farol", role:"Guardião · GuardaVidas",
+    color:0x2ecc82, angle: Math.PI*0.42, dist: 15,
+    link:"https://github.com/djhessica/GuardaVidas",
+    dialogue:[
+      "Ah, viajante... sente o cheiro de sal no ar? Isso é o GuardaVidas.",
+      "Foi um projeto que me fez pensar com calma em cada regra, cada fluxo — como um farol que precisa acender na hora certa, sem falhar.",
+      "Se quiser explorar o código por trás dessa vigília, o repositório está aberto para você."
+    ]
+  },
+  {
+    key:"npc_festadecor", name:"Mercadora Encantada", role:"Comerciante · Festa Décor",
+    color:0x8a5cf6, angle: Math.PI*0.58, dist: 15,
+    link:"https://github.com/djhessica/festa-decor-ecommerce",
+    dialogue:[
+      "Bem-vindo à minha barraca! Aqui nasceu o Festa Décor, meu projeto de e-commerce.",
+      "Cada vitrine, cada carrinho, cada botão de compra foi pensado para deixar a jornada de quem visita mais leve e bonita.",
+      "Dá uma olhada no repositório, se quiser ver como montei essa lojinha."
+    ]
+  },
+  {
+    key:"npc_biblioteca", name:"Bibliotecário Ancião", role:"Guardião · Biblioteca SENAI",
+    color:0x3aa0ff, angle: Math.PI*1.0, dist: 15,
+    link:"https://github.com/djhessica/Projeto-Biblioteca-frontEnd-e-backEnd",
+    dialogue:[
+      "Shh... este é o salão da Biblioteca, projeto que fiz durante minha formação no SENAI.",
+      "Front-end e back-end conversando como estante e catálogo — cada um cuidando da sua parte, mas servindo a mesma história.",
+      "Se curiosidade te move, o repositório completo está guardado aqui neste link."
+    ]
+  }
+];
+
+const CREATURE_DATA = [
+  {key:"sp_fox", name:"Raposa de Cristal", role:"Espírito da Criatividade", type:"creature", portraitGlyph:"🦊",
+    color:0xff8fd6, angle:0, dist:34,
+    dialogue:[
+      "Psiu... sente essa fagulha de ideia? Sou eu, sempre por perto quando nasce algo criativo.",
+      "Gosto de rondar por onde surgem interfaces bonitas e soluções inesperadas."
+    ]},
+  {key:"sp_owl", name:"Coruja Arcana", role:"Espírito da Lógica", type:"creature", portraitGlyph:"🦉",
+    color:0x8fd6ff, angle:Math.PI/2, dist:34,
+    dialogue:[
+      "Uuh... eu enxergo os padrões escondidos no código, os laços e condições que sustentam tudo.",
+      "Quando a lógica finalmente se encaixa, esse é o meu momento favorito."
+    ]},
+  {key:"sp_wolf", name:"Lobo de Luz", role:"Espírito da Persistência", type:"creature", portraitGlyph:"🐺",
+    color:0xffd68f, angle:Math.PI, dist:34,
+    dialogue:[
+      "Em cada erro que você corrigiu, eu estava ao seu lado, uivando pra você não desistir.",
+      "Persistência não é sobre nunca cair — é sobre sempre levantar de novo."
+    ]},
+  {key:"sp_sala", name:"Salamandra Élfica", role:"Espírito do Aprendizado", type:"creature", portraitGlyph:"🦎",
+    color:0x8fffb0, angle:-Math.PI/2, dist:34,
+    dialogue:[
+      "Minha pele muda de cor a cada nova tecnologia que você aprende.",
+      "Continue curiosa — o aprendizado nunca realmente termina."
+    ]}
+];
+
+const ARTIFACT_DATA = [
+  {key:"a1", name:"Cristal da Criatividade", color:0xff6fae, angle: 0.10*Math.PI, dist:16, flavor:"A criatividade transforma problemas em soluções elegantes."},
+  {key:"a2", name:"Orbe da Persistência", color:0xffa63a, angle: 0.95*Math.PI, dist:20, flavor:"Cada bug vencido é um passo a mais na jornada."},
+  {key:"a3", name:"Rúnia da Colaboração", color:0x3affd0, angle:-0.55*Math.PI, dist:34, flavor:"Boas ideias crescem quando compartilhadas."},
+  {key:"a4", name:"Selo do Aprendizado Contínuo", color:0xc6ff3a, angle:-0.05*Math.PI, dist:44, flavor:"Aprender é o hábito que nunca termina."},
+  {key:"a5", name:"Gema da Atenção aos Detalhes", color:0xff3a3a, angle: 0.55*Math.PI, dist:52, flavor:"Pequenos detalhes fazem grandes diferenças."},
+  {key:"a6", name:"Farol da Organização", color:0xffe93a, angle:-1.35*Math.PI, dist:60, flavor:"Um código bem estruturado ilumina o caminho de quem vier depois."}
+];
 
 const TOTEM_LAYOUT = [
   {key:"about",    angle:  Math.PI*0.25},
@@ -700,6 +896,128 @@ function buildTotem(cfg){
 }
 TOTEM_LAYOUT.forEach(cfg=>buildTotem({...cfg, color: CONTENT[cfg.key].color}));
 
+/* ------------- NPCs ------------- */
+const npcGroups = {};
+const npcMeshes = [];
+
+function buildNPC(cfg){
+  const group = new THREE.Group();
+  const pos = new THREE.Vector3(Math.cos(cfg.angle)*cfg.dist, 0, Math.sin(cfg.angle)*cfg.dist);
+  group.position.copy(pos);
+
+  const pickMeshes = [];
+
+  if(cfg.type === 'creature'){
+    // Corpo de criatura mística (formas orgânicas simples)
+    const bodyMat = new THREE.MeshStandardMaterial({color:cfg.color, roughness:0.45, metalness:0.1, emissive:cfg.color, emissiveIntensity:0.15});
+    const body = new THREE.Mesh(new THREE.SphereGeometry(0.55,14,12), bodyMat);
+    body.scale.set(1,0.85,1.35);
+    body.position.y = 1.05; body.castShadow = true;
+    group.add(body); pickMeshes.push(body);
+
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.36,14,12), bodyMat);
+    head.position.set(0,1.35,0.62); head.castShadow = true;
+    group.add(head); pickMeshes.push(head);
+
+    const earGeo = new THREE.ConeGeometry(0.14,0.4,8);
+    const earL = new THREE.Mesh(earGeo, bodyMat); earL.position.set(-0.18,1.75,0.6); earL.rotation.z = 0.2;
+    const earR = new THREE.Mesh(earGeo, bodyMat); earR.position.set(0.18,1.75,0.6); earR.rotation.z = -0.2;
+    group.add(earL, earR);
+
+    const tail = new THREE.Mesh(new THREE.ConeGeometry(0.22,0.9,10), bodyMat);
+    tail.position.set(0,1.15,-0.85); tail.rotation.x = Math.PI*0.42;
+    group.add(tail);
+
+    const eyeMat = new THREE.MeshStandardMaterial({color:0xffffff, emissive:0xffffff, emissiveIntensity:0.8});
+    const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.05,8,8), eyeMat); eyeL.position.set(-0.13,1.4,0.94);
+    const eyeR = eyeL.clone(); eyeR.position.x = 0.13;
+    group.add(eyeL, eyeR);
+
+    const aura = new THREE.PointLight(cfg.color, 1.1, 6);
+    aura.position.y = 1.2;
+    group.add(aura);
+
+    const ringBase = new THREE.Mesh(new THREE.CircleGeometry(0.85,20), new THREE.MeshBasicMaterial({color:cfg.color, transparent:true, opacity:0.16}));
+    ringBase.rotation.x = -Math.PI/2; ringBase.position.y = 0.02;
+    group.add(ringBase);
+  } else {
+    // NPC humano (contador de histórias)
+    const robeMat = new THREE.MeshStandardMaterial({color:cfg.color, roughness:0.55, metalness:0.15});
+    const trimMat2 = new THREE.MeshStandardMaterial({color:0xd4af37, roughness:0.3, metalness:0.6, emissive:0x5a4310, emissiveIntensity:0.35});
+
+    const robe = new THREE.Mesh(new THREE.ConeGeometry(0.6,1.5,10), robeMat);
+    robe.position.y = 1.2; robe.castShadow = true; robe.receiveShadow = true;
+    group.add(robe); pickMeshes.push(robe);
+
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.34,16,16), new THREE.MeshStandardMaterial({color:0xd8b48a, roughness:0.7}));
+    head.position.y = 2.15; head.castShadow = true;
+    group.add(head); pickMeshes.push(head);
+
+    const collar = new THREE.Mesh(new THREE.TorusGeometry(0.5,0.07,8,16), trimMat2);
+    collar.position.y = 1.75; collar.rotation.x = Math.PI/2;
+    group.add(collar);
+
+    const staff = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,1.9,6), new THREE.MeshStandardMaterial({color:0x3a2e1a, roughness:0.8}));
+    staff.position.set(0.55, 1.1, 0.1);
+    group.add(staff);
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.16,12,12), new THREE.MeshStandardMaterial({color:cfg.color, emissive:cfg.color, emissiveIntensity:1.1}));
+    orb.position.set(0.55, 2.05, 0.1);
+    group.add(orb);
+    const orbLight = new THREE.PointLight(cfg.color, 1.0, 6);
+    orbLight.position.copy(orb.position);
+    group.add(orbLight);
+
+    const ringBase = new THREE.Mesh(new THREE.CircleGeometry(0.9,20), new THREE.MeshBasicMaterial({color:cfg.color, transparent:true, opacity:0.18}));
+    ringBase.rotation.x = -Math.PI/2; ringBase.position.y = 0.02;
+    group.add(ringBase);
+  }
+
+  // Indicador de história disponível (flutua acima da cabeça)
+  const marker = new THREE.Mesh(new THREE.OctahedronGeometry(0.18,0), new THREE.MeshStandardMaterial({color:0xf3d576, emissive:0xf3d576, emissiveIntensity:1.2}));
+  marker.position.y = cfg.type==='creature' ? 2.05 : 2.75;
+  group.add(marker);
+
+  scene.add(group);
+  pickMeshes.forEach(m=>{ m.userData.npc = cfg.key; npcMeshes.push(m); });
+  npcGroups[cfg.key] = {group, base:pos, marker, cfg, idle: Math.random()*Math.PI*2, talked:false};
+}
+NPC_DATA.forEach(buildNPC);
+CREATURE_DATA.forEach(buildNPC);
+
+/* ------------- Artefatos místicos (colecionáveis) ------------- */
+const artifactGroups = {};
+
+function buildArtifact(cfg){
+  const group = new THREE.Group();
+  const pos = new THREE.Vector3(Math.cos(cfg.angle)*cfg.dist, 0, Math.sin(cfg.angle)*cfg.dist);
+  group.position.copy(pos);
+
+  const mat = new THREE.MeshStandardMaterial({
+    color:cfg.color, emissive:cfg.color, emissiveIntensity:1.0,
+    metalness:0.4, roughness:0.2, transparent:true, opacity:0.95
+  });
+  const gem = new THREE.Mesh(new THREE.IcosahedronGeometry(0.4,0), mat);
+  gem.position.y = 1.3;
+  group.add(gem);
+
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.62,0.035,8,32), new THREE.MeshStandardMaterial({color:cfg.color, emissive:cfg.color, emissiveIntensity:0.8}));
+  ring.rotation.x = Math.PI/2.3;
+  ring.position.y = 1.3;
+  group.add(ring);
+
+  const light = new THREE.PointLight(cfg.color, 1.3, 5);
+  light.position.y = 1.3;
+  group.add(light);
+
+  const baseGlow = new THREE.Mesh(new THREE.CircleGeometry(0.6,20), new THREE.MeshBasicMaterial({color:cfg.color, transparent:true, opacity:0.22}));
+  baseGlow.rotation.x = -Math.PI/2; baseGlow.position.y = 0.02;
+  group.add(baseGlow);
+
+  scene.add(group);
+  artifactGroups[cfg.key] = {group, gem, ring, base:pos, cfg, collected:false};
+}
+ARTIFACT_DATA.forEach(buildArtifact);
+
 /* ------------- Personagem ------------- */
 const player = new THREE.Group();
 player.position.copy(state.playerPos);
@@ -738,7 +1056,7 @@ player.add(playerLight);
 window.addEventListener('keydown', e=>{
   state.keys[e.key.toLowerCase()] = true;
   if(e.key.toLowerCase()==='e') tryInteract();
-  if(e.key === 'Escape') closeModal();
+  if(e.key === 'Escape'){ closeModal(); closeDialogue(); }
 });
 window.addEventListener('keyup', e=>{ state.keys[e.key.toLowerCase()] = false; });
 
@@ -773,10 +1091,15 @@ function handlePick(clientX, clientY){
   pointer.x = (clientX/window.innerWidth)*2-1;
   pointer.y = -(clientY/window.innerHeight)*2+1;
   raycaster.setFromCamera(pointer, camera);
-  const hits = raycaster.intersectObjects(totemMeshes, false);
-  if(hits.length){
-    const key = hits[0].object.userData.key;
-    if(key) openModal(key);
+  const totemHits = raycaster.intersectObjects(totemMeshes, false);
+  if(totemHits.length){
+    const key = totemHits[0].object.userData.key;
+    if(key){ openModal(key); return; }
+  }
+  const npcHits = raycaster.intersectObjects(npcMeshes, false);
+  if(npcHits.length){
+    const key = npcHits[0].object.userData.npc;
+    if(key) openDialogue(key);
   }
 }
 renderer.domElement.addEventListener('click', e=> handlePick(e.clientX, e.clientY));
@@ -837,12 +1160,181 @@ function closeModal(){
   state.modalOpen = false;
 }
 
+/* ---- Diálogo de NPC ---- */
+const npcDialogueEl = document.getElementById('npc-dialogue');
+const npcBox = document.getElementById('npc-box');
+const npcPortrait = document.getElementById('npc-portrait');
+const npcNameEl = document.getElementById('npc-name');
+const npcRoleEl = document.getElementById('npc-role');
+const npcTextEl = document.getElementById('npc-text');
+const npcDotsEl = document.getElementById('npc-dots');
+const npcLinkEl = document.getElementById('npc-link');
+
+state.dialogueOpen = false;
+state.dialogueKey = null;
+state.dialoguePage = 0;
+
+function renderDialoguePage(){
+  const npc = npcGroups[state.dialogueKey].cfg;
+  const page = npc.dialogue[state.dialoguePage];
+  npcTextEl.textContent = page;
+  npcDotsEl.innerHTML = npc.dialogue.map((_,i)=>`<span class="${i===state.dialoguePage?'active':''}"></span>`).join('');
+  const isLast = state.dialoguePage === npc.dialogue.length-1;
+  if(isLast && npc.link){
+    npcLinkEl.href = npc.link;
+    npcLinkEl.innerHTML = `${ICONS.github} Ver repositório`;
+    npcLinkEl.classList.remove('hidden');
+  } else {
+    npcLinkEl.classList.add('hidden');
+  }
+}
+
+function openDialogue(key){
+  const npc = npcGroups[key];
+  if(!npc || state.modalOpen) return;
+  state.dialogueOpen = true;
+  state.dialogueKey = key;
+  state.dialoguePage = 0;
+  const accent = '#'+npc.cfg.color.toString(16).padStart(6,'0');
+  npcBox.style.setProperty('--npc-accent', accent);
+  npcBox.style.setProperty('--npc-accent-bright', accent);
+  npcBox.style.setProperty('--npc-glow', accent+'55');
+  npcPortrait.style.setProperty('--npc-accent', accent);
+  npcPortrait.textContent = npc.cfg.portraitGlyph || npc.cfg.name.charAt(0);
+  npcNameEl.textContent = npc.cfg.name;
+  npcRoleEl.textContent = npc.cfg.role;
+  renderDialoguePage();
+  npcDialogueEl.classList.add('open');
+  npc.marker.visible = true;
+  npc.talked = true;
+  chime('npc');
+}
+function advanceDialogue(){
+  if(!state.dialogueOpen) return;
+  const npc = npcGroups[state.dialogueKey].cfg;
+  if(state.dialoguePage < npc.dialogue.length-1){
+    state.dialoguePage++;
+    renderDialoguePage();
+  } else {
+    closeDialogue();
+  }
+}
+function closeDialogue(){
+  npcDialogueEl.classList.remove('open');
+  state.dialogueOpen = false;
+  state.dialogueKey = null;
+}
+npcBox.addEventListener('click', e=>{
+  if(e.target === npcLinkEl || npcLinkEl.contains(e.target)) return;
+  advanceDialogue();
+});
+
+/* ---- Toast de notificação ---- */
+const toastEl = document.getElementById('toast');
+const toastTitleEl = document.getElementById('toast-title');
+const toastSubEl = document.getElementById('toast-sub');
+let toastTimer = null;
+function showToast(title, sub, accentHex, achievement){
+  clearTimeout(toastTimer);
+  toastEl.classList.toggle('achievement', !!achievement);
+  toastEl.style.setProperty('--toast-accent', accentHex);
+  toastEl.style.setProperty('--toast-glow', accentHex+'66');
+  toastTitleEl.textContent = title;
+  toastSubEl.textContent = sub;
+  toastEl.classList.add('show');
+  toastTimer = setTimeout(()=> toastEl.classList.remove('show'), achievement ? 5200 : 3200);
+}
+
+/* ---- Artefatos místicos ---- */
+state.collectedArtifacts = new Set();
+const inventoryCountEl = document.getElementById('inventory-count');
+const TOTAL_ARTIFACTS = ARTIFACT_DATA.length;
+
+function collectArtifact(key){
+  const a = artifactGroups[key];
+  if(!a || a.collected) return;
+  a.collected = true;
+  state.collectedArtifacts.add(key);
+  inventoryCountEl.textContent = `${state.collectedArtifacts.size}/${TOTAL_ARTIFACTS}`;
+
+  const accent = '#'+a.cfg.color.toString(16).padStart(6,'0');
+  showToast(a.cfg.name, a.cfg.flavor, accent, false);
+  chime('artifact');
+
+  // animação de coleta: sobe, gira rápido e desaparece
+  const startY = a.group.position.y;
+  const t0 = performance.now();
+  function collectAnim(){
+    const el = (performance.now()-t0)/500;
+    if(el >= 1){ scene.remove(a.group); checkAchievement(); return; }
+    a.group.position.y = startY + el*1.6;
+    a.group.scale.setScalar(1-el);
+    a.gem.rotation.y += 0.3;
+    requestAnimationFrame(collectAnim);
+  }
+  collectAnim();
+}
+
+function checkAchievement(){
+  if(state.collectedArtifacts.size === TOTAL_ARTIFACTS){
+    showToast('Conquista Desbloqueada!', 'Todos os artefatos místicos foram reunidos.', '#f3d576', true);
+    hubBurst();
+  }
+}
+
+function hubBurst(){
+  const count = 90;
+  const positions = new Float32Array(count*3);
+  const velocities = [];
+  for(let i=0;i<count;i++){
+    positions[i*3]=0; positions[i*3+1]=0.6; positions[i*3+2]=0;
+    const a = Math.random()*Math.PI*2;
+    const speed = 3+Math.random()*4;
+    velocities.push({x:Math.cos(a)*speed, y:3+Math.random()*4, z:Math.sin(a)*speed});
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  const mat = new THREE.PointsMaterial({color:0xf3d576, size:0.22, transparent:true, opacity:1, fog:false});
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+  const t0 = performance.now();
+  function burstAnim(){
+    const dt = (performance.now()-t0)/1000;
+    if(dt > 2.2){ scene.remove(pts); return; }
+    const pos = geo.attributes.position;
+    for(let i=0;i<count;i++){
+      const v = velocities[i];
+      pos.setXYZ(i, v.x*dt, 0.6 + v.y*dt - 4.5*dt*dt, v.z*dt);
+    }
+    pos.needsUpdate = true;
+    mat.opacity = Math.max(0, 1 - dt/2.2);
+    requestAnimationFrame(burstAnim);
+  }
+  burstAnim();
+}
+
+function updateArtifacts(dt){
+  const t = performance.now()*0.001;
+  for(const key in artifactGroups){
+    const a = artifactGroups[key];
+    if(a.collected) continue;
+    a.gem.rotation.y += dt*0.9;
+    a.gem.rotation.x += dt*0.4;
+    a.group.position.y = Math.sin(t*1.6 + a.base.x)*0.15;
+    a.ring.rotation.z += dt*0.5;
+    if(!state.modalOpen && !state.dialogueOpen){
+      const flatDist = Math.hypot(player.position.x - a.base.x, player.position.z - a.base.z);
+      if(flatDist < 2.0) collectArtifact(key);
+    }
+  }
+}
+
 /* Som de feedback sintetizado (sem assets externos) */
 let audioCtx = null;
 function chime(key){
   try{
     if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    const freqs = {about:523.25, skills:659.25, projects:783.99, contact:987.77};
+    const freqs = {about:523.25, skills:659.25, projects:783.99, contact:987.77, npc:698.46, artifact:880.0};
     const o = audioCtx.createOscillator();
     const g = audioCtx.createGain();
     o.type = 'sine';
@@ -860,19 +1352,25 @@ function chime(key){
    INTERAÇÃO POR PROXIMIDADE
    ============================================================ */
 const INTERACT_RADIUS = 4.4;
+const NPC_RADIUS = 4.0;
 const promptEl = document.getElementById('interact-prompt');
 const promptTitle = document.getElementById('interact-title');
 
 function updateNearest(){
-  let best = null, bestDist = Infinity;
+  let best = null, bestType = null, bestDist = Infinity;
   for(const key in totemGroups){
     const d = player.position.distanceTo(totemGroups[key].base);
-    if(d < INTERACT_RADIUS && d < bestDist){ best = key; bestDist = d; }
+    if(d < INTERACT_RADIUS && d < bestDist){ best = key; bestType = 'totem'; bestDist = d; }
+  }
+  for(const key in npcGroups){
+    const d = player.position.distanceTo(npcGroups[key].base);
+    if(d < NPC_RADIUS && d < bestDist){ best = key; bestType = 'npc'; bestDist = d; }
   }
   if(best !== state.nearest){
     state.nearest = best;
+    state.nearestType = bestType;
     if(best){
-      promptTitle.textContent = CONTENT[best].label;
+      promptTitle.textContent = bestType === 'npc' ? npcGroups[best].cfg.name : CONTENT[best].label;
       promptEl.classList.add('show');
     } else {
       promptEl.classList.remove('show');
@@ -880,7 +1378,10 @@ function updateNearest(){
   }
 }
 function tryInteract(){
-  if(state.nearest && !state.modalOpen) openModal(state.nearest);
+  if(state.dialogueOpen){ advanceDialogue(); return; }
+  if(!state.nearest || state.modalOpen) return;
+  if(state.nearestType === 'npc') openDialogue(state.nearest);
+  else openModal(state.nearest);
 }
 
 /* ============================================================
@@ -909,6 +1410,29 @@ function drawMinimap(){
     mmCtx.beginPath(); mmCtx.arc(x,y,4,0,Math.PI*2); mmCtx.fill();
   }
 
+  // Artefatos
+  for(const key in artifactGroups){
+    const a = artifactGroups[key];
+    if(a.collected) continue;
+    const x = cx + a.base.x*scale, y = cy + a.base.z*scale;
+    mmCtx.fillStyle = '#'+a.cfg.color.toString(16).padStart(6,'0');
+    mmCtx.save();
+    mmCtx.translate(x,y); mmCtx.rotate(Math.PI/4);
+    mmCtx.fillRect(-2.5,-2.5,5,5);
+    mmCtx.restore();
+  }
+
+  // NPCs
+  for(const key in npcGroups){
+    const p = npcGroups[key].base;
+    const x = cx + p.x*scale, y = cy + p.z*scale;
+    mmCtx.fillStyle = '#f3d576';
+    mmCtx.save();
+    mmCtx.translate(x,y); mmCtx.rotate(Math.PI/4);
+    mmCtx.fillRect(-3,-3,6,6);
+    mmCtx.restore();
+  }
+
   // jogador
   const px = cx + player.position.x*scale, py = cy + player.position.z*scale;
   mmCtx.save();
@@ -933,7 +1457,7 @@ const BOUND = 66;
 const SPEED = 7.2;
 
 function updatePlayer(dt){
-  if(state.modalOpen) return;
+  if(state.modalOpen || state.dialogueOpen) return;
   const yaw = state.cameraYaw;
   const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
   const right = new THREE.Vector3(forward.z, 0, -forward.x);
@@ -1002,6 +1526,17 @@ function updateTotems(dt){
   });
 }
 
+function updateNPCs(dt){
+  const t = performance.now()*0.001;
+  for(const key in npcGroups){
+    const npc = npcGroups[key];
+    npc.group.rotation.y = Math.sin(t*0.4+npc.idle)*0.35;
+    npc.marker.position.y = 2.75 + Math.sin(t*2+npc.idle)*0.08;
+    npc.marker.rotation.y += dt*1.2;
+    npc.marker.material.emissiveIntensity = npc.talked ? 0.5 : (1.0+Math.sin(t*3)*0.4);
+  }
+}
+
 function animate(){
   requestAnimationFrame(animate);
   const dt = Math.min(state.clock.getDelta(), 0.05);
@@ -1011,6 +1546,8 @@ function animate(){
     updateNearest();
   }
   updateTotems(dt);
+  updateNPCs(dt);
+  updateArtifacts(dt);
   drawMinimap();
   renderer.render(scene, camera);
 }

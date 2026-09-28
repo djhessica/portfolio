@@ -2875,7 +2875,7 @@
     if(state.modalOpen || state.dialogueOpen) return;
     const yaw = state.cameraYaw;
     const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
-    const right = new THREE.Vector3(forward.z, 0, -forward.x);
+    const right = new THREE.Vector3(-forward.z, 0, forward.x);
 
     let mx=0, mz=0;
     if(state.keys['w']||state.keys['arrowup']) mz += 1;

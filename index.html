@@ -2875,12 +2875,12 @@
     if(state.modalOpen || state.dialogueOpen) return;
     const yaw = state.cameraYaw;
     const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
-    const right = new THREE.Vector3(-forward.z, 0, forward.x);
+    const right = new THREE.Vector3(forward.z, 0, -forward.x);
 
     let mx=0, mz=0;
     if(state.keys['w']||state.keys['arrowup']) mz += 1;
-    if(state.keys['s']||state.keys['arrowdown']) mz += 1;
-    if(state.keys['d']||state.keys['arrowright']) mx += 1;
+    if(state.keys['s']||state.keys['arrowdown']) mz -= 1;
+    if(state.keys['d']||state.keys['arrowright']) mx -= 1;
     if(state.keys['a']||state.keys['arrowleft']) mx += 1;
 
     const move = new THREE.Vector3();
